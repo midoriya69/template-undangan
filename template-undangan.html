@@ -436,7 +436,7 @@ animation:none;
 <div class="cover-card">
 <p class="kicker">Undangan Pernikahan</p>
 <h1>Arka &amp; Livia</h1>
-<p class="to-line">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+<p class="to-line">Kepada Yth. <span id="recipient-name">Bapak/Ibu/Saudara/i</span></p>
 <p class="to-line">Dengan hormat, kami mengundang Anda untuk hadir</p>
 <button class="open-btn" type="button" onclick="openInvite()">Buka Undangan</button>
 </div>
@@ -504,6 +504,21 @@ berkenan hadir serta memberikan doa restu.
 </main>
 
 <script>
+function setRecipientName(){
+const params = new URLSearchParams(window.location.search);
+const rawName = params.get("to") || params.get("nama");
+const recipientEl = document.getElementById("recipient-name");
+
+if(!recipientEl || !rawName){
+return;
+}
+
+const cleaned = rawName.replace(/\+/g," ").trim();
+if(cleaned){
+recipientEl.textContent = cleaned;
+}
+}
+
 function openInvite(){
 const cover = document.getElementById("cover");
 const content = document.getElementById("content");
@@ -520,6 +535,8 @@ coverVideo.pause();
 window.scrollTo(0,0);
 },260);
 }
+
+setRecipientName();
 </script>
 </body>
 </html>

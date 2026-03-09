@@ -3,186 +3,183 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Undangan Pernikahan</title>
-
 <style>
+*{
+box-sizing:border-box;
+}
 
 body{
 margin:0;
 font-family:'Segoe UI',sans-serif;
 background:#f8f5f2;
-color:#444;
+color:#3f3a34;
 text-align:center;
 overflow-x:hidden;
 overflow-y:hidden;
 }
 
-/* cover */
-
 .hero{
-height:100vh;
+min-height:100vh;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
-url("https://images.unsplash.com/photo-1522673607200-164d1b6ce486");
+padding:24px;
+background:linear-gradient(rgba(0,0,0,0.42),rgba(0,0,0,0.42)),
+url("https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1400&q=80");
 background-size:cover;
-color:white;
-position:relative;
-overflow:hidden;
+background-position:center;
+color:#fff;
 }
 
-/* animasi teks */
-
 .hero h1{
+margin:10px 0;
 font-size:48px;
-animation:fadeUp 2s ease;
 }
 
 .hero p{
-animation:fadeUp 2.5s ease;
+margin:6px 0;
 }
 
 button{
-padding:12px 25px;
+padding:12px 28px;
 font-size:16px;
 border:none;
 background:#c9a96e;
-color:white;
-border-radius:5px;
+color:#fff;
+border-radius:6px;
 cursor:pointer;
 margin-top:20px;
-animation:fadeUp 3s ease;
 }
 
-/* bunga */
-
-.flower{
-position:absolute;
-top:-50px;
-font-size:20px;
-animation:fall linear infinite;
-opacity:0.8;
-pointer-events:none;
+#content{
+max-width:900px;
+margin:0 auto;
 }
-
-@keyframes fall{
-to{
-transform:translateY(110vh) rotate(360deg);
-}
-}
-
-@keyframes fadeUp{
-from{
-opacity:0;
-transform:translateY(30px);
-}
-to{
-opacity:1;
-transform:translateY(0);
-}
-}
-
-/* section */
 
 section{
-padding:60px 20px;
+padding:56px 20px;
+}
+
+.card{
+background:#fff;
+border-radius:12px;
+padding:28px 20px;
+margin:0 auto 22px;
+max-width:720px;
+box-shadow:0 8px 26px rgba(0,0,0,0.06);
 }
 
 .nama{
-font-size:40px;
-color:#c9a96e;
-margin:20px 0;
+font-size:36px;
+color:#b69359;
+margin:14px 0;
+}
+
+.sub{
+font-size:18px;
+color:#726a61;
+margin:0 0 6px;
+}
+
+h2{
+margin:0 0 20px;
+font-size:28px;
+color:#7d6540;
+}
+
+p{
+line-height:1.7;
+margin:8px 0;
+}
+
+a{
+color:#8b6a35;
 }
 
 .hidden{
 display:none;
 }
 
+@media (max-width:640px){
+.hero h1{
+font-size:38px;
+}
+
+.nama{
+font-size:30px;
+}
+}
 </style>
 </head>
-
 <body>
-
-
 <div class="hero" id="cover">
-
 <p>Undangan Pernikahan</p>
 <h1>Arka & Livia</h1>
-
 <p>Kepada Yth.</p>
 <p>Bapak / Ibu / Saudara</p>
-
 <button onclick="openInvite()">Buka Undangan</button>
-
 </div>
-
 
 <div id="content" class="hidden">
-
 <section>
-
-<h2>Assalamu’alaikum Warahmatullahi Wabarakatuh</h2>
-
+<div class="card">
+<h2>Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
 <p>
 Dengan memohon rahmat Tuhan Yang Maha Esa,
-kami bermaksud menyelenggarakan pernikahan:
+kami bermaksud mengundang Bapak/Ibu/Saudara/i
+untuk hadir pada acara pernikahan kami.
 </p>
-
-<div class="nama">Arka Mahendra</div>
-
-<div class="nama">&</div>
-
-<div class="nama">Livia Prameswari</div>
-
-</section>
-
 </div>
 
+<div class="card">
+<p class="sub">Mempelai Pria</p>
+<div class="nama">Arka Mahendra</div>
+<p>Putra pertama dari Bapak Surya Mahendra & Ibu Ratna Dewi</p>
+<p class="sub" style="margin-top:20px;">Mempelai Wanita</p>
+<div class="nama">Livia Prameswari</div>
+<p>Putri kedua dari Bapak Pramono & Ibu Wulan Sari</p>
+</div>
+
+<div class="card">
+<h2>Waktu dan Tempat</h2>
+<p><strong>Akad Nikah</strong></p>
+<p>Sabtu, 12 Desember 2026</p>
+<p>08.00 WIB - selesai</p>
+<p>Masjid Al-Ikhlas, Jakarta Selatan</p>
+<br>
+<p><strong>Resepsi</strong></p>
+<p>Sabtu, 12 Desember 2026</p>
+<p>11.00 WIB - 14.00 WIB</p>
+<p>Gedung Serbaguna Cempaka, Jakarta Selatan</p>
+<p><a href="#">Lihat Lokasi di Google Maps</a></p>
+</div>
+
+<div class="card">
+<h2>Doa Restu</h2>
+<p>
+Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
+Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
+</p>
+<p>Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
+</div>
+
+<div class="card">
+<p>Hormat kami,</p>
+<div class="nama">Arka & Livia</div>
+</div>
+</section>
+</div>
 
 <script>
-
-/* buka undangan */
-
 function openInvite(){
-
 document.getElementById("cover").style.display="none";
 document.getElementById("content").classList.remove("hidden");
 document.body.style.overflowY="auto";
 document.documentElement.style.overflowY="auto";
 window.scrollTo(0,0);
-
 }
-
-/* bunga jatuh */
-
-function createFlower(){
-
-const flower = document.createElement("div");
-
-flower.classList.add("flower");
-
-flower.innerHTML = "🌸";
-
-flower.style.left = Math.random()*100 + "vw";
-
-flower.style.animationDuration = (5 + Math.random()*5) + "s";
-
-flower.style.fontSize = (10 + Math.random()*20) + "px";
-
-document.body.appendChild(flower);
-
-setTimeout(()=>{
-flower.remove();
-},10000);
-
-}
-
-setInterval(createFlower,300);
-
 </script>
-
 </body>
 </html>

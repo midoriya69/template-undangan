@@ -169,6 +169,21 @@ color:rgba(255,255,255,0.92);
 margin:6px 0;
 }
 
+.recipient-line{
+margin:8px 0 4px;
+}
+
+#recipient-name{
+display:block;
+font-family:"Cormorant Garamond",serif;
+font-size:clamp(30px,5.8vw,44px);
+font-weight:700;
+line-height:1.05;
+letter-spacing:.01em;
+color:#fff;
+text-shadow:0 6px 18px rgba(0,0,0,0.35);
+}
+
 .open-btn{
 border:none;
 background:linear-gradient(135deg,#d8c099,#b5925f);
@@ -436,7 +451,8 @@ animation:none;
 <div class="cover-card">
 <p class="kicker">Undangan Pernikahan</p>
 <h1>Arka &amp; Livia</h1>
-<p class="to-line">Kepada Yth. <span id="recipient-name">Bapak/Ibu/Saudara/i</span></p>
+<p class="to-line">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+<p class="recipient-line"><span id="recipient-name">Tamu Undangan</span></p>
 <p class="to-line">Dengan hormat, kami mengundang Anda untuk hadir</p>
 <button class="open-btn" type="button" onclick="openInvite()">Buka Undangan</button>
 </div>

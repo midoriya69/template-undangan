@@ -140,6 +140,36 @@ line-height:.95;
 letter-spacing:.01em;
 }
 
+.couple-title{
+width:100%;
+height:auto;
+margin:12px auto 14px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:2px;
+text-align:center;
+}
+
+.couple-title .name-top,
+.couple-title .name-bottom{
+display:block;
+line-height:.9;
+font-size:clamp(56px,10vw,92px);
+}
+
+.couple-title .amp{
+display:block;
+font-family:"Bodoni Moda",serif;
+font-size:clamp(20px,3.2vw,30px);
+font-weight:500;
+line-height:1;
+opacity:.82;
+color:#e9d6b6;
+margin:2px 0;
+}
+
 .to-line{
 margin:6px 0;
 font-size:18px;
@@ -480,6 +510,13 @@ gap:14px;
 .story-progress{right:10px;gap:8px;}
 .story-dot{width:8px;height:8px;}
 .editorial{padding:24px 18px;border-radius:24px;}
+.couple-title{
+margin:8px auto 12px;
+}
+.couple-title .name-top,
+.couple-title .name-bottom{
+font-size:clamp(50px,16vw,70px);
+}
 .to-line{font-size:15px;}
 .scene-subtitle{font-size:17px;line-height:1.75;}
 .person p{font-size:16px;}
@@ -515,13 +552,17 @@ animation:none;
 <section class="cover" id="cover">
 <div class="cover-media" aria-hidden="true">
 <video class="cover-video" autoplay muted loop playsinline preload="metadata">
-<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
 </video>
 </div>
 <div class="cover-overlay" aria-hidden="true"></div>
 <div class="cover-card">
 <p class="kicker">Undangan Pernikahan</p>
-<h1>Arka &amp; Livia</h1>
+<h1 class="couple-title">
+<span class="name-top">Arka</span>
+<span class="amp">&amp;</span>
+<span class="name-bottom">Livia</span>
+</h1>
 <p class="to-line">Kepada Yth. Bapak/Ibu/Saudara/i</p>
 <p class="recipient-line"><span id="recipient-name">Tamu Undangan</span></p>
 <p class="to-line">Dengan hormat, kami mengundang Anda untuk hadir</p>
@@ -541,7 +582,7 @@ animation:none;
 <section class="scene reveal delay-1" id="scene-opening" data-scene="opening">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">
@@ -561,7 +602,7 @@ kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kam
 <section class="scene reveal delay-2" id="scene-couple" data-scene="couple">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">
@@ -587,7 +628,7 @@ kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kam
 <section class="scene reveal delay-3" id="scene-event" data-scene="event">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">
@@ -617,7 +658,7 @@ kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kam
 <section class="scene reveal delay-4" id="scene-location" data-scene="location">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">
@@ -635,7 +676,7 @@ Agar perjalanan lebih nyaman, silakan buka navigasi digital melalui tombol berik
 <section class="scene reveal delay-5" id="scene-closing" data-scene="closing">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">

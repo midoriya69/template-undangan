@@ -3,182 +3,422 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Undangan Pernikahan</title>
+<title>Undangan Pernikahan Arka & Livia</title>
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap");
+
+:root{
+--bg:#f6f1e8;
+--paper:#fffdf9;
+--ink:#2f2b28;
+--muted:#6f655c;
+--gold:#b5925f;
+--gold-soft:#e7d7bd;
+--olive:#5f6d5d;
+--shadow:0 20px 45px rgba(49,38,21,0.12);
+--radius:20px;
+}
+
 *{
 box-sizing:border-box;
 }
 
-body{
+html,body{
 margin:0;
-font-family:'Segoe UI',sans-serif;
-background:#f8f5f2;
-color:#3f3a34;
-text-align:center;
+padding:0;
+}
+
+body{
+font-family:"Manrope",sans-serif;
+color:var(--ink);
+background:
+radial-gradient(circle at 12% 14%, rgba(181,146,95,0.2), transparent 30%),
+radial-gradient(circle at 86% 6%, rgba(95,109,93,0.2), transparent 34%),
+linear-gradient(165deg,#f8f2e8 0%,#f2ece0 52%,#f9f5ee 100%);
+line-height:1.7;
 overflow-x:hidden;
-overflow-y:hidden;
 }
 
-.hero{
-min-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
+body.is-locked{
+height:100vh;
+overflow:hidden;
+}
+
+.cover{
+position:fixed;
+inset:0;
+display:grid;
+place-items:center;
 padding:24px;
-background:linear-gradient(rgba(0,0,0,0.42),rgba(0,0,0,0.42)),
-url("https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1400&q=80");
-background-size:cover;
-background-position:center;
 color:#fff;
+z-index:20;
+background:
+linear-gradient(rgba(20,20,16,0.62),rgba(20,20,16,0.62)),
+url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
+transition:opacity .55s ease,visibility .55s ease;
 }
 
-.hero h1{
-margin:10px 0;
-font-size:48px;
+.cover::before,
+.cover::after{
+content:"";
+position:absolute;
+width:220px;
+height:220px;
+border:1px solid rgba(255,255,255,0.3);
+border-radius:50%;
+pointer-events:none;
 }
 
-.hero p{
+.cover::before{
+top:32px;
+left:34px;
+}
+
+.cover::after{
+bottom:30px;
+right:30px;
+}
+
+.cover.fade-out{
+opacity:0;
+visibility:hidden;
+pointer-events:none;
+}
+
+.cover-card{
+width:min(560px,100%);
+background:rgba(25,23,20,0.47);
+backdrop-filter:blur(5px);
+border:1px solid rgba(255,255,255,0.28);
+border-radius:26px;
+padding:38px 28px;
+text-align:center;
+box-shadow:var(--shadow);
+animation:heroIn .85s ease both;
+}
+
+.kicker{
+letter-spacing:.24em;
+text-transform:uppercase;
+font-size:12px;
+margin:0;
+color:rgba(255,255,255,0.82);
+}
+
+.cover h1{
+font-family:"Cormorant Garamond",serif;
+font-size:62px;
+font-weight:600;
+line-height:1;
+margin:16px 0;
+}
+
+.to-line{
+font-size:15px;
+color:rgba(255,255,255,0.92);
 margin:6px 0;
 }
 
-button{
-padding:12px 28px;
-font-size:16px;
+.open-btn{
 border:none;
-background:#c9a96e;
+background:linear-gradient(135deg,#d8c099,#b5925f);
 color:#fff;
-border-radius:6px;
+padding:12px 28px;
+border-radius:999px;
+font-size:15px;
+font-weight:600;
+font-family:"Manrope",sans-serif;
 cursor:pointer;
-margin-top:20px;
+margin-top:22px;
+transition:transform .2s ease,box-shadow .2s ease;
+box-shadow:0 8px 22px rgba(0,0,0,0.22);
 }
 
-#content{
-max-width:900px;
+.open-btn:hover{
+transform:translateY(-2px);
+box-shadow:0 12px 24px rgba(0,0,0,0.24);
+}
+
+main{
+width:min(1050px,92%);
 margin:0 auto;
-}
-
-section{
-padding:56px 20px;
-}
-
-.card{
-background:#fff;
-border-radius:12px;
-padding:28px 20px;
-margin:0 auto 22px;
-max-width:720px;
-box-shadow:0 8px 26px rgba(0,0,0,0.06);
-}
-
-.nama{
-font-size:36px;
-color:#b69359;
-margin:14px 0;
-}
-
-.sub{
-font-size:18px;
-color:#726a61;
-margin:0 0 6px;
-}
-
-h2{
-margin:0 0 20px;
-font-size:28px;
-color:#7d6540;
-}
-
-p{
-line-height:1.7;
-margin:8px 0;
-}
-
-a{
-color:#8b6a35;
+padding:56px 0 80px;
 }
 
 .hidden{
 display:none;
 }
 
-@media (max-width:640px){
-.hero h1{
-font-size:38px;
+.panel{
+background:var(--paper);
+border-radius:var(--radius);
+padding:34px 28px;
+box-shadow:var(--shadow);
+margin-bottom:22px;
+position:relative;
+overflow:hidden;
 }
 
-.nama{
-font-size:30px;
+.panel::before{
+content:"";
+position:absolute;
+inset:auto -70px -70px auto;
+width:190px;
+height:190px;
+background:radial-gradient(circle, rgba(181,146,95,0.15), transparent 66%);
+pointer-events:none;
 }
+
+.hero-panel{
+text-align:center;
+padding:48px 26px;
+}
+
+.hero-panel h2{
+font-family:"Cormorant Garamond",serif;
+font-size:46px;
+font-weight:600;
+margin:0 0 6px;
+line-height:1.05;
+color:#44382b;
+}
+
+.hero-panel p{
+color:var(--muted);
+margin:0;
+}
+
+.section-title{
+font-family:"Cormorant Garamond",serif;
+font-size:36px;
+font-weight:600;
+line-height:1.1;
+margin:0 0 18px;
+text-align:center;
+color:#4a3b2b;
+}
+
+.couple-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:18px;
+}
+
+.person{
+border:1px solid #efe5d8;
+border-radius:16px;
+padding:20px;
+background:linear-gradient(180deg,#fff, #fff9f0);
+text-align:center;
+}
+
+.person small{
+text-transform:uppercase;
+letter-spacing:.16em;
+font-size:11px;
+color:#8f7f6f;
+}
+
+.person h3{
+font-family:"Cormorant Garamond",serif;
+font-size:38px;
+line-height:1.08;
+margin:10px 0;
+font-weight:600;
+color:var(--gold);
+}
+
+.person p{
+margin:0;
+color:#6a5f55;
+font-size:14px;
+}
+
+.event-grid{
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:16px;
+}
+
+.event-card{
+border-radius:16px;
+padding:22px;
+background:linear-gradient(160deg,#fff 0%, #fff7eb 100%);
+border:1px solid #eee0ca;
+}
+
+.event-card h4{
+font-size:20px;
+margin:0 0 10px;
+color:#3e3327;
+}
+
+.event-card p{
+margin:4px 0;
+color:#5f554b;
+}
+
+.map-wrap{
+text-align:center;
+}
+
+.map-btn{
+display:inline-block;
+text-decoration:none;
+margin-top:6px;
+background:#445743;
+color:#fff;
+padding:11px 22px;
+border-radius:999px;
+font-size:14px;
+font-weight:600;
+transition:transform .2s ease,background .2s ease;
+}
+
+.map-btn:hover{
+transform:translateY(-2px);
+background:#394c39;
+}
+
+.rsvp{
+text-align:center;
+}
+
+.rsvp strong{
+color:#4b3d2e;
+}
+
+.footer-note{
+text-align:center;
+font-size:14px;
+color:#7a7067;
+margin-top:16px;
+}
+
+.reveal{
+opacity:0;
+transform:translateY(24px);
+}
+
+.loaded .reveal{
+animation:fadeUp .8s ease forwards;
+}
+
+.loaded .delay-1{animation-delay:.1s;}
+.loaded .delay-2{animation-delay:.2s;}
+.loaded .delay-3{animation-delay:.3s;}
+.loaded .delay-4{animation-delay:.4s;}
+.loaded .delay-5{animation-delay:.5s;}
+
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(24px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes heroIn{
+from{opacity:0;transform:translateY(16px) scale(.98);}
+to{opacity:1;transform:translateY(0) scale(1);}
+}
+
+@media (max-width:860px){
+.cover h1{font-size:50px;}
+.hero-panel h2{font-size:38px;}
+.couple-grid,.event-grid{grid-template-columns:1fr;}
+}
+
+@media (max-width:560px){
+.cover-card{padding:30px 20px;}
+.cover h1{font-size:42px;}
+.panel{padding:26px 18px;}
+.section-title{font-size:31px;}
+.person h3{font-size:32px;}
 }
 </style>
 </head>
-<body>
-<div class="hero" id="cover">
-<p>Undangan Pernikahan</p>
-<h1>Arka & Livia</h1>
-<p>Kepada Yth.</p>
-<p>Bapak / Ibu / Saudara</p>
-<button onclick="openInvite()">Buka Undangan</button>
+<body class="is-locked">
+<section class="cover" id="cover">
+<div class="cover-card">
+<p class="kicker">Undangan Pernikahan</p>
+<h1>Arka &amp; Livia</h1>
+<p class="to-line">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+<p class="to-line">Dengan hormat, kami mengundang Anda untuk hadir</p>
+<button class="open-btn" type="button" onclick="openInvite()">Buka Undangan</button>
 </div>
+</section>
 
-<div id="content" class="hidden">
-<section>
-<div class="card">
+<main id="content" class="hidden">
+<section class="panel hero-panel reveal delay-1">
+<p class="kicker" style="color:#9c886e;">12 Desember 2026</p>
 <h2>Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
 <p>
-Dengan memohon rahmat Tuhan Yang Maha Esa,
-kami bermaksud mengundang Bapak/Ibu/Saudara/i
-untuk hadir pada acara pernikahan kami.
+Dengan memohon rahmat dan ridha Tuhan Yang Maha Esa, kami bermaksud menyelenggarakan
+acara pernikahan putra-putri kami.
 </p>
-</div>
+</section>
 
-<div class="card">
-<p class="sub">Mempelai Pria</p>
-<div class="nama">Arka Mahendra</div>
-<p>Putra pertama dari Bapak Surya Mahendra & Ibu Ratna Dewi</p>
-<p class="sub" style="margin-top:20px;">Mempelai Wanita</p>
-<div class="nama">Livia Prameswari</div>
-<p>Putri kedua dari Bapak Pramono & Ibu Wulan Sari</p>
+<section class="panel reveal delay-2">
+<h3 class="section-title">Mempelai</h3>
+<div class="couple-grid">
+<article class="person">
+<small>Mempelai Pria</small>
+<h3>Arka Mahendra</h3>
+<p>Putra pertama dari<br>Bapak Surya Mahendra &amp; Ibu Ratna Dewi</p>
+</article>
+<article class="person">
+<small>Mempelai Wanita</small>
+<h3>Livia Prameswari</h3>
+<p>Putri kedua dari<br>Bapak Pramono &amp; Ibu Wulan Sari</p>
+</article>
 </div>
+</section>
 
-<div class="card">
-<h2>Waktu dan Tempat</h2>
-<p><strong>Akad Nikah</strong></p>
+<section class="panel reveal delay-3">
+<h3 class="section-title">Waktu &amp; Tempat</h3>
+<div class="event-grid">
+<article class="event-card">
+<h4>Akad Nikah</h4>
 <p>Sabtu, 12 Desember 2026</p>
 <p>08.00 WIB - selesai</p>
 <p>Masjid Al-Ikhlas, Jakarta Selatan</p>
-<br>
-<p><strong>Resepsi</strong></p>
+</article>
+<article class="event-card">
+<h4>Resepsi</h4>
 <p>Sabtu, 12 Desember 2026</p>
 <p>11.00 WIB - 14.00 WIB</p>
 <p>Gedung Serbaguna Cempaka, Jakarta Selatan</p>
-<p><a href="#">Lihat Lokasi di Google Maps</a></p>
-</div>
-
-<div class="card">
-<h2>Doa Restu</h2>
-<p>
-Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila
-Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.
-</p>
-<p>Wassalamu'alaikum Warahmatullahi Wabarakatuh</p>
-</div>
-
-<div class="card">
-<p>Hormat kami,</p>
-<div class="nama">Arka & Livia</div>
+</article>
 </div>
 </section>
-</div>
+
+<section class="panel map-wrap reveal delay-4">
+<h3 class="section-title">Lokasi Acara</h3>
+<p>Silakan klik tombol di bawah untuk membuka peta lokasi acara.</p>
+<a class="map-btn" href="#" target="_blank" rel="noopener noreferrer">Buka Google Maps</a>
+</section>
+
+<section class="panel rsvp reveal delay-5">
+<h3 class="section-title">Doa Restu</h3>
+<p>
+Merupakan kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i
+berkenan hadir serta memberikan doa restu.
+</p>
+<p><strong>Wassalamu'alaikum Warahmatullahi Wabarakatuh</strong></p>
+<p class="footer-note">Hormat kami, keluarga besar Arka &amp; Livia</p>
+</section>
+</main>
 
 <script>
 function openInvite(){
-document.getElementById("cover").style.display="none";
-document.getElementById("content").classList.remove("hidden");
-document.body.style.overflowY="auto";
-document.documentElement.style.overflowY="auto";
+const cover = document.getElementById("cover");
+const content = document.getElementById("content");
+
+cover.classList.add("fade-out");
+setTimeout(function(){
+content.classList.remove("hidden");
+content.classList.add("loaded");
+document.body.classList.remove("is-locked");
 window.scrollTo(0,0);
+},260);
 }
 </script>
 </body>

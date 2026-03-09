@@ -15,6 +15,7 @@ background:#f8f5f2;
 color:#444;
 text-align:center;
 overflow-x:hidden;
+overflow-y:hidden;
 }
 
 /* cover */
@@ -64,6 +65,7 @@ top:-50px;
 font-size:20px;
 animation:fall linear infinite;
 opacity:0.8;
+pointer-events:none;
 }
 
 @keyframes fall{
@@ -148,6 +150,9 @@ function openInvite(){
 
 document.getElementById("cover").style.display="none";
 document.getElementById("content").classList.remove("hidden");
+document.body.style.overflowY="auto";
+document.documentElement.style.overflowY="auto";
+window.scrollTo(0,0);
 
 }
 

@@ -52,10 +52,37 @@ place-items:center;
 padding:24px;
 color:#fff;
 z-index:20;
+overflow:hidden;
 background:
 linear-gradient(rgba(20,20,16,0.62),rgba(20,20,16,0.62)),
 url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
 transition:opacity .55s ease,visibility .55s ease;
+}
+
+.cover-media{
+position:absolute;
+inset:0;
+z-index:0;
+pointer-events:none;
+}
+
+.cover-video{
+width:100%;
+height:100%;
+object-fit:cover;
+transform:scale(1.04);
+animation:slowZoom 18s ease-in-out infinite alternate;
+}
+
+.cover-overlay{
+position:absolute;
+inset:0;
+z-index:1;
+background:
+radial-gradient(circle at 20% 15%, rgba(207,175,124,0.32), transparent 45%),
+radial-gradient(circle at 80% 12%, rgba(66,82,66,0.35), transparent 48%),
+linear-gradient(rgba(14,13,11,0.72),rgba(14,13,11,0.72));
+pointer-events:none;
 }
 
 .cover::before,
@@ -67,6 +94,7 @@ height:220px;
 border:1px solid rgba(255,255,255,0.3);
 border-radius:50%;
 pointer-events:none;
+z-index:2;
 }
 
 .cover::before{
@@ -95,6 +123,17 @@ padding:38px 28px;
 text-align:center;
 box-shadow:var(--shadow);
 animation:heroIn .85s ease both;
+position:relative;
+z-index:3;
+}
+
+.cover-card::before{
+content:"";
+display:block;
+width:82px;
+height:2px;
+margin:0 auto 14px;
+background:linear-gradient(90deg, transparent, rgba(255,255,255,0.85), transparent);
 }
 
 .kicker{
@@ -320,6 +359,11 @@ from{opacity:0;transform:translateY(16px) scale(.98);}
 to{opacity:1;transform:translateY(0) scale(1);}
 }
 
+@keyframes slowZoom{
+from{transform:scale(1.04);}
+to{transform:scale(1.12);}
+}
+
 @media (max-width:860px){
 .cover h1{font-size:50px;}
 .hero-panel h2{font-size:38px;}
@@ -332,11 +376,36 @@ to{opacity:1;transform:translateY(0) scale(1);}
 .panel{padding:26px 18px;}
 .section-title{font-size:31px;}
 .person h3{font-size:32px;}
+.cover::before,
+.cover::after{
+width:140px;
+height:140px;
+}
+}
+
+@media (prefers-reduced-motion: reduce){
+.cover-video{
+display:none;
+animation:none;
+}
+.reveal{
+opacity:1;
+transform:none;
+}
+.loaded .reveal{
+animation:none;
+}
 }
 </style>
 </head>
 <body class="is-locked">
 <section class="cover" id="cover">
+<div class="cover-media" aria-hidden="true">
+<video class="cover-video" autoplay muted loop playsinline preload="metadata">
+<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+</video>
+</div>
+<div class="cover-overlay" aria-hidden="true"></div>
 <div class="cover-card">
 <p class="kicker">Undangan Pernikahan</p>
 <h1>Arka &amp; Livia</h1>
@@ -411,12 +480,16 @@ berkenan hadir serta memberikan doa restu.
 function openInvite(){
 const cover = document.getElementById("cover");
 const content = document.getElementById("content");
+const coverVideo = document.querySelector(".cover-video");
 
 cover.classList.add("fade-out");
 setTimeout(function(){
 content.classList.remove("hidden");
 content.classList.add("loaded");
 document.body.classList.remove("is-locked");
+if(coverVideo){
+coverVideo.pause();
+}
 window.scrollTo(0,0);
 },260);
 }

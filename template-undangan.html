@@ -32,7 +32,7 @@ font-family:"Cormorant Garamond",serif;
 color:var(--text);
 background:#0d0c0b;
 overflow-x:hidden;
-scroll-snap-type:y mandatory;
+scroll-snap-type:y proximity;
 transition:background .75s ease;
 font-size:18px;
 letter-spacing:.01em;
@@ -257,6 +257,19 @@ scroll-snap-align:start;
 scroll-snap-stop:always;
 overflow:hidden;
 isolation:isolate;
+opacity:.9;
+filter:saturate(.92);
+transition:opacity .6s ease,filter .6s ease;
+}
+
+.scene::before{
+content:"";
+position:absolute;
+inset:0;
+z-index:2;
+pointer-events:none;
+background:
+linear-gradient(to bottom, rgba(9,9,9,0.62), transparent 22%, transparent 78%, rgba(9,9,9,0.62));
 }
 
 .scene-bg,
@@ -271,6 +284,8 @@ z-index:0;
 background-position:center;
 background-size:cover;
 filter:saturate(.92) brightness(.72);
+transform:translateY(calc(var(--parallax,0) * 26px)) scale(1.08);
+transition:transform .55s ease,filter .55s ease,opacity .55s ease;
 }
 
 .scene-video{
@@ -280,6 +295,8 @@ height:100%;
 object-fit:cover;
 opacity:.45;
 filter:saturate(.9) contrast(1.02);
+transform:translateY(calc(var(--parallax,0) * 34px)) scale(1.12);
+transition:transform .55s ease,opacity .55s ease,filter .55s ease;
 }
 
 .scene-overlay{
@@ -288,13 +305,41 @@ background:
 radial-gradient(circle at 18% 18%, rgba(213,170,110,0.22), transparent 42%),
 radial-gradient(circle at 82% 22%, rgba(97,122,114,0.2), transparent 46%),
 linear-gradient(rgba(6,6,6,0.62),rgba(6,6,6,0.66));
+transition:opacity .55s ease;
 }
 
 .scene-inner{
 position:relative;
-z-index:3;
+z-index:4;
 width:min(980px,100%);
 margin:0 auto;
+transform:translateY(24px) scale(.985);
+opacity:.84;
+transition:transform .6s ease,opacity .6s ease;
+}
+
+.scene.is-active{
+opacity:1;
+filter:saturate(1);
+}
+
+.scene.is-active .scene-inner{
+transform:translateY(0) scale(1);
+opacity:1;
+}
+
+.scene.is-active .scene-video{
+opacity:.58;
+filter:saturate(1) contrast(1.08);
+}
+
+.scene.is-active .scene-bg{
+filter:saturate(1) brightness(.76);
+}
+
+.scene.is-prev .scene-inner,
+.scene.is-next .scene-inner{
+opacity:.92;
 }
 
 .editorial{
@@ -556,6 +601,20 @@ animation:none;
 .scene{
 scroll-snap-align:none;
 scroll-snap-stop:normal;
+opacity:1;
+filter:none;
+transition:none;
+}
+.scene::before{
+background:none;
+}
+.scene-bg,
+.scene-video,
+.scene-overlay,
+.scene-inner{
+transform:none;
+transition:none;
+opacity:1;
 }
 .reveal{
 opacity:1;
@@ -736,6 +795,10 @@ recipientEl.textContent = cleaned;
 }
 
 let sceneObserverInitialized = false;
+let sceneElements = [];
+let currentSceneName = "";
+let scrollEffectsBound = false;
+let scrollTicking = false;
 
 function setActiveScene(scene){
 if(!scene){
@@ -743,6 +806,11 @@ return;
 }
 
 const sceneName = scene.dataset.scene;
+if(sceneName === currentSceneName){
+return;
+}
+
+currentSceneName = sceneName;
 document.body.setAttribute("data-scene", sceneName);
 
 document.querySelectorAll(".story-dot").forEach(function(dot){
@@ -758,28 +826,90 @@ video.pause();
 });
 }
 
+function updateSceneClasses(activeIndex){
+sceneElements.forEach(function(scene,index){
+scene.classList.toggle("is-active", index === activeIndex);
+scene.classList.toggle("is-prev", index === activeIndex - 1);
+scene.classList.toggle("is-next", index === activeIndex + 1);
+});
+}
+
+function updateScrollEffects(){
+if(!sceneElements.length){
+return;
+}
+
+const viewportHeight = window.innerHeight || 1;
+let closestIndex = 0;
+let closestDistance = Infinity;
+
+sceneElements.forEach(function(scene,index){
+const rect = scene.getBoundingClientRect();
+const distanceFromCenter = (rect.top + (rect.height / 2) - (viewportHeight / 2)) / (viewportHeight / 2);
+const clamped = Math.max(-1, Math.min(1, distanceFromCenter));
+scene.style.setProperty("--parallax", String((-clamped * 0.45).toFixed(4)));
+
+const distanceAbs = Math.abs(distanceFromCenter);
+if(distanceAbs < closestDistance){
+closestDistance = distanceAbs;
+closestIndex = index;
+}
+});
+
+updateSceneClasses(closestIndex);
+setActiveScene(sceneElements[closestIndex]);
+}
+
+function bindScrollEffects(){
+if(scrollEffectsBound){
+return;
+}
+
+if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+updateSceneClasses(0);
+if(sceneElements[0]){
+setActiveScene(sceneElements[0]);
+}
+return;
+}
+
+function requestScrollUpdate(){
+if(scrollTicking){
+return;
+}
+
+scrollTicking = true;
+window.requestAnimationFrame(function(){
+scrollTicking = false;
+updateScrollEffects();
+});
+}
+
+window.addEventListener("scroll", requestScrollUpdate, { passive:true });
+window.addEventListener("resize", requestScrollUpdate);
+scrollEffectsBound = true;
+requestScrollUpdate();
+}
+
 function initSceneObserver(){
 if(sceneObserverInitialized){
 return;
 }
 
-const scenes = document.querySelectorAll(".scene[data-scene]");
-if(!scenes.length){
+sceneElements = Array.from(document.querySelectorAll(".scene[data-scene]"));
+if(!sceneElements.length){
 return;
 }
 
-const observer = new IntersectionObserver(function(entries){
-entries.forEach(function(entry){
-if(entry.isIntersecting){
-setActiveScene(entry.target);
+bindScrollEffects();
+if(sceneElements[0]){
+updateSceneClasses(0);
+setActiveScene(sceneElements[0]);
+sceneElements[0].style.setProperty("--parallax","0");
 }
-});
-},{
-threshold:0.6
-});
-
-scenes.forEach(function(scene){
-observer.observe(scene);
+window.requestAnimationFrame(updateScrollEffects);
+sceneElements.forEach(function(scene){
+scene.style.setProperty("--parallax","0");
 });
 
 sceneObserverInitialized = true;

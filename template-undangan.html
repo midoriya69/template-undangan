@@ -362,6 +362,24 @@ border-bottom:1px solid rgba(255,255,255,0.22);
 text-align:center;
 }
 
+.person-photo{
+width:min(240px,70%);
+aspect-ratio:3/4;
+margin:18px auto 14px;
+border-radius:120px 120px 22px 22px;
+overflow:hidden;
+border:1px solid rgba(255,255,255,0.38);
+box-shadow:0 14px 34px rgba(0,0,0,0.34);
+background:rgba(255,255,255,0.08);
+}
+
+.person-photo img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
 .person small{
 display:block;
 margin:16px 0 8px;
@@ -519,6 +537,7 @@ font-size:clamp(50px,16vw,70px);
 }
 .to-line{font-size:15px;}
 .scene-subtitle{font-size:17px;line-height:1.75;}
+.person-photo{width:min(210px,72%);}
 .person p{font-size:16px;}
 .event-item p{font-size:16px;}
 .footer-note{font-size:15px;}
@@ -552,7 +571,7 @@ animation:none;
 <section class="cover" id="cover">
 <div class="cover-media" aria-hidden="true">
 <video class="cover-video" autoplay muted loop playsinline preload="metadata">
-<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4">
+<source src="https://assets.mixkit.co/videos/preview/mixkit-couple-holding-hands-at-the-lake-6031-large.mp4" type="video/mp4">
 </video>
 </div>
 <div class="cover-overlay" aria-hidden="true"></div>
@@ -582,7 +601,7 @@ animation:none;
 <section class="scene reveal delay-1" id="scene-opening" data-scene="opening">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4">
+<source src="https://assets.mixkit.co/videos/preview/mixkit-couple-hold-hands-on-romantic-hike-in-forest-8958-large.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">
@@ -602,7 +621,7 @@ kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kam
 <section class="scene reveal delay-2" id="scene-couple" data-scene="couple">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4" type="video/mp4">
+<source src="https://assets.mixkit.co/videos/preview/mixkit-couple-walk-in-park-eatng-ice-cream-and-holding-hands-12915-large.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">
@@ -611,11 +630,17 @@ kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kam
 <h2 class="scene-title">Mempelai</h2>
 <div class="couple-grid">
 <article class="person">
+<figure class="person-photo">
+<img src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Foto calon mempelai pria Arka Mahendra">
+</figure>
 <small>Mempelai Pria</small>
 <h3>Arka Mahendra</h3>
 <p>Putra pertama dari<br>Bapak Surya Mahendra &amp; Ibu Ratna Dewi</p>
 </article>
 <article class="person">
+<figure class="person-photo">
+<img src="https://images.pexels.com/photos/291759/pexels-photo-291759.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Foto calon mempelai wanita Livia Prameswari">
+</figure>
 <small>Mempelai Wanita</small>
 <h3>Livia Prameswari</h3>
 <p>Putri kedua dari<br>Bapak Pramono &amp; Ibu Wulan Sari</p>
@@ -628,7 +653,7 @@ kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kam
 <section class="scene reveal delay-3" id="scene-event" data-scene="event">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" type="video/mp4">
+<source src="https://assets.mixkit.co/videos/preview/mixkit-countryside-meadow-4077-large.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">
@@ -658,7 +683,7 @@ kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kam
 <section class="scene reveal delay-4" id="scene-location" data-scene="location">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4" type="video/mp4">
+<source src="https://assets.mixkit.co/videos/preview/mixkit-very-close-shot-of-the-leaves-of-a-tree-wet-18310-large.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">
@@ -676,7 +701,7 @@ Agar perjalanan lebih nyaman, silakan buka navigasi digital melalui tombol berik
 <section class="scene reveal delay-5" id="scene-closing" data-scene="closing">
 <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
 <video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4" type="video/mp4">
+<source src="https://assets.mixkit.co/videos/preview/mixkit-couple-holding-hands-at-the-lake-6031-large.mp4" type="video/mp4">
 </video>
 <div class="scene-overlay" aria-hidden="true"></div>
 <div class="scene-inner">

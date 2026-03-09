@@ -85,26 +85,37 @@ linear-gradient(rgba(14,13,11,0.72),rgba(14,13,11,0.72));
 pointer-events:none;
 }
 
-.cover::before,
-.cover::after{
-content:"";
+.corner-svg{
 position:absolute;
-width:220px;
-height:220px;
-border:1px solid rgba(255,255,255,0.3);
-border-radius:50%;
-pointer-events:none;
+width:200px;
+height:200px;
 z-index:2;
+pointer-events:none;
+opacity:.68;
 }
 
-.cover::before{
-top:32px;
-left:34px;
+.corner-svg path,
+.corner-svg circle{
+fill:none;
+stroke:rgba(255,255,255,0.68);
+stroke-width:1.4;
+stroke-linecap:round;
+stroke-linejoin:round;
 }
 
-.cover::after{
-bottom:30px;
-right:30px;
+.corner-svg .soft{
+stroke:rgba(255,255,255,0.38);
+}
+
+.corner-top-left{
+top:18px;
+left:18px;
+}
+
+.corner-bottom-right{
+right:18px;
+bottom:18px;
+transform:rotate(180deg);
 }
 
 .cover.fade-out{
@@ -376,10 +387,10 @@ to{transform:scale(1.12);}
 .panel{padding:26px 18px;}
 .section-title{font-size:31px;}
 .person h3{font-size:32px;}
-.cover::before,
-.cover::after{
-width:140px;
-height:140px;
+.corner-svg{
+width:132px;
+height:132px;
+opacity:.5;
 }
 }
 
@@ -406,6 +417,22 @@ animation:none;
 </video>
 </div>
 <div class="cover-overlay" aria-hidden="true"></div>
+<svg class="corner-svg corner-top-left" viewBox="0 0 200 200" aria-hidden="true">
+<path d="M20 180 C20 95 78 28 164 20"></path>
+<path class="soft" d="M36 168 C38 106 82 58 146 36"></path>
+<path d="M78 106 C90 90 104 79 122 72"></path>
+<path d="M76 108 C64 91 50 78 34 70"></path>
+<circle class="soft" cx="122" cy="72" r="6"></circle>
+<circle class="soft" cx="34" cy="70" r="4.5"></circle>
+</svg>
+<svg class="corner-svg corner-bottom-right" viewBox="0 0 200 200" aria-hidden="true">
+<path d="M20 180 C20 95 78 28 164 20"></path>
+<path class="soft" d="M36 168 C38 106 82 58 146 36"></path>
+<path d="M78 106 C90 90 104 79 122 72"></path>
+<path d="M76 108 C64 91 50 78 34 70"></path>
+<circle class="soft" cx="122" cy="72" r="6"></circle>
+<circle class="soft" cx="34" cy="70" r="4.5"></circle>
+</svg>
 <div class="cover-card">
 <p class="kicker">Undangan Pernikahan</p>
 <h1>Arka &amp; Livia</h1>

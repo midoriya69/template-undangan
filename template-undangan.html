@@ -5,18 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Undangan Pernikahan Arka & Livia</title>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Italiana&family=Outfit:wght@300;400;500;600;700&display=swap");
 
 :root{
---bg:#f6f1e8;
---paper:#fffdf9;
---ink:#2f2b28;
---muted:#6f655c;
---gold:#b5925f;
---gold-soft:#e7d7bd;
---olive:#5f6d5d;
---shadow:0 20px 45px rgba(49,38,21,0.12);
---radius:20px;
+--text:#f5efe6;
+--text-soft:rgba(245,239,230,0.84);
+--line:rgba(255,255,255,0.32);
+--line-soft:rgba(255,255,255,0.2);
+--gold:#d2ad72;
+--gold-soft:#f0d5a6;
+--glass:rgba(14,13,12,0.36);
+--glass-strong:rgba(10,9,8,0.5);
 }
 
 *{
@@ -29,20 +28,24 @@ padding:0;
 }
 
 body{
-font-family:"Plus Jakarta Sans",sans-serif;
-color:var(--ink);
-background:
-radial-gradient(circle at 12% 14%, rgba(181,146,95,0.2), transparent 30%),
-radial-gradient(circle at 86% 6%, rgba(95,109,93,0.2), transparent 34%),
-linear-gradient(165deg,#f8f2e8 0%,#f2ece0 52%,#f9f5ee 100%);
-line-height:1.7;
+font-family:"Outfit",sans-serif;
+color:var(--text);
+background:#0d0c0b;
 overflow-x:hidden;
+scroll-snap-type:y mandatory;
+transition:background .75s ease;
 }
 
 body.is-locked{
 height:100vh;
 overflow:hidden;
 }
+
+body[data-scene="opening"]{background:#191310;}
+body[data-scene="couple"]{background:#18110f;}
+body[data-scene="event"]{background:#151816;}
+body[data-scene="location"]{background:#111719;}
+body[data-scene="closing"]{background:#17130f;}
 
 .cover{
 position:fixed;
@@ -53,69 +56,35 @@ padding:24px;
 color:#fff;
 z-index:20;
 overflow:hidden;
-background:
-linear-gradient(rgba(20,20,16,0.62),rgba(20,20,16,0.62)),
-url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1600&q=80") center/cover no-repeat;
 transition:opacity .55s ease,visibility .55s ease;
 }
 
-.cover-media{
+.cover-media,
+.cover-overlay{
 position:absolute;
 inset:0;
+}
+
+.cover-media{
 z-index:0;
 pointer-events:none;
+background:url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1800&q=80") center/cover no-repeat;
 }
 
 .cover-video{
 width:100%;
 height:100%;
 object-fit:cover;
-transform:scale(1.04);
-animation:slowZoom 18s ease-in-out infinite alternate;
+transform:scale(1.06);
+animation:coverZoom 18s ease-in-out infinite alternate;
 }
 
 .cover-overlay{
-position:absolute;
-inset:0;
 z-index:1;
 background:
-radial-gradient(circle at 20% 15%, rgba(207,175,124,0.32), transparent 45%),
-radial-gradient(circle at 80% 12%, rgba(66,82,66,0.35), transparent 48%),
-linear-gradient(rgba(14,13,11,0.72),rgba(14,13,11,0.72));
-pointer-events:none;
-}
-
-.corner-svg{
-position:absolute;
-width:170px;
-height:170px;
-z-index:2;
-pointer-events:none;
-opacity:.48;
-}
-
-.corner-svg path,
-.corner-svg circle{
-fill:none;
-stroke:rgba(255,255,255,0.68);
-stroke-width:1.4;
-stroke-linecap:round;
-stroke-linejoin:round;
-}
-
-.corner-svg .soft{
-stroke:rgba(255,255,255,0.38);
-}
-
-.corner-top-left{
-top:18px;
-left:18px;
-}
-
-.corner-bottom-right{
-right:18px;
-bottom:18px;
-transform:rotate(180deg);
+radial-gradient(circle at 20% 14%, rgba(221,188,129,0.25), transparent 40%),
+radial-gradient(circle at 80% 16%, rgba(90,118,104,0.2), transparent 42%),
+linear-gradient(rgba(8,8,8,0.72),rgba(8,8,8,0.72));
 }
 
 .cover.fade-out{
@@ -125,400 +94,398 @@ pointer-events:none;
 }
 
 .cover-card{
-width:min(520px,100%);
-background:rgba(23,20,17,0.58);
-backdrop-filter:blur(7px);
-border:1px solid rgba(255,255,255,0.24);
-border-radius:24px;
-padding:34px 30px;
-text-align:center;
-box-shadow:var(--shadow);
-animation:heroIn .85s ease both;
 position:relative;
-z-index:3;
+z-index:2;
+width:min(560px,100%);
+background:rgba(14,12,10,0.56);
+backdrop-filter:blur(8px);
+border:1px solid rgba(255,255,255,0.24);
+border-radius:28px;
+padding:38px 30px;
+text-align:center;
+box-shadow:0 18px 50px rgba(0,0,0,0.36);
 }
 
-.cover-card::before{
+.cover-card::before,
+.cover-card::after{
 content:"";
 display:block;
-width:64px;
+width:74px;
 height:1px;
-margin:0 auto 16px;
-background:linear-gradient(90deg, transparent, rgba(255,255,255,0.72), transparent);
+margin:0 auto;
+background:linear-gradient(90deg,transparent,rgba(255,255,255,0.72),transparent);
 }
 
+.cover-card::before{margin-bottom:14px;}
+.cover-card::after{margin-top:18px;}
+
 .kicker{
-letter-spacing:.18em;
-text-transform:uppercase;
-font-size:11px;
 margin:0;
-color:rgba(255,255,255,0.8);
+font-size:11px;
+letter-spacing:.22em;
+text-transform:uppercase;
+color:rgba(255,255,255,0.78);
 }
 
 .cover h1{
-font-family:"Playfair Display",serif;
-font-size:clamp(42px,8vw,56px);
-font-weight:600;
-line-height:1.08;
-margin:12px 0 14px;
-letter-spacing:.01em;
+margin:14px 0 10px;
+font-family:"Italiana",serif;
+font-size:clamp(46px,9vw,68px);
+font-weight:400;
+line-height:1.03;
+letter-spacing:.03em;
 }
 
 .to-line{
+margin:6px 0;
 font-size:14px;
-color:rgba(255,255,255,0.84);
-margin:4px 0;
+color:var(--text-soft);
 }
 
 .recipient-line{
-margin:8px 0 10px;
+margin:8px 0 12px;
 }
 
 #recipient-name{
 display:block;
-font-family:"Playfair Display",serif;
+font-family:"Italiana",serif;
 font-size:clamp(22px,4vw,30px);
-font-weight:600;
-line-height:1.15;
-letter-spacing:.01em;
-color:#f6ebd8;
-text-shadow:0 4px 14px rgba(0,0,0,0.3);
+font-weight:400;
+color:#f7e8cf;
+letter-spacing:.03em;
+text-shadow:0 5px 16px rgba(0,0,0,0.4);
 }
 
 .open-btn{
+margin-top:18px;
 border:none;
-background:linear-gradient(135deg,#d8c099,#b5925f);
-color:#fff;
-padding:12px 28px;
 border-radius:999px;
-font-size:15px;
+padding:12px 28px;
+font-size:14px;
 font-weight:600;
-font-family:"Plus Jakarta Sans",sans-serif;
+letter-spacing:.04em;
+font-family:"Outfit",sans-serif;
+color:#fff;
 cursor:pointer;
-margin-top:22px;
-transition:transform .2s ease,box-shadow .2s ease;
-box-shadow:0 8px 22px rgba(0,0,0,0.22);
+background:linear-gradient(135deg,#d7b985,#b58a50);
+box-shadow:0 10px 26px rgba(0,0,0,0.32);
+transition:transform .2s ease, box-shadow .2s ease;
 }
 
 .open-btn:hover{
 transform:translateY(-2px);
-box-shadow:0 12px 24px rgba(0,0,0,0.24);
+box-shadow:0 14px 30px rgba(0,0,0,0.36);
 }
 
 main{
-width:min(980px,92%);
-margin:0 auto;
-padding:78px 0 96px;
 position:relative;
-isolation:isolate;
+width:100%;
 }
 
 .hidden{
 display:none;
 }
 
-main::before,
-main::after{
-content:"";
-position:absolute;
-z-index:-1;
-pointer-events:none;
+.story-progress{
+position:fixed;
+right:18px;
+top:50%;
+transform:translateY(-50%);
+z-index:12;
+display:flex;
+flex-direction:column;
+gap:10px;
 }
 
-main::before{
-top:24px;
-left:-120px;
-width:280px;
-height:280px;
-background:radial-gradient(circle, rgba(181,146,95,0.16), transparent 66%);
+.story-dot{
+width:10px;
+height:10px;
+border-radius:50%;
+border:1px solid rgba(255,255,255,0.66);
+background:rgba(255,255,255,0.2);
+cursor:pointer;
+padding:0;
 }
 
-main::after{
-bottom:20px;
-right:-140px;
-width:320px;
-height:320px;
-background:radial-gradient(circle, rgba(98,111,90,0.14), transparent 68%);
+.story-dot.active{
+background:var(--gold-soft);
+transform:scale(1.14);
 }
 
-.panel{
-background:linear-gradient(180deg, #fffefa 0%, #fffcf6 100%);
-border-radius:26px;
-padding:42px 38px;
-box-shadow:0 20px 50px rgba(56,42,24,0.1);
-margin-bottom:24px;
+.scene{
 position:relative;
-overflow:hidden;
-border:1px solid #ecdfca;
-}
-
-.panel::before{
-content:"";
-position:absolute;
-inset:0;
-background:
-linear-gradient(135deg, rgba(255,255,255,0.52), transparent 45%),
-radial-gradient(circle at 85% 10%, rgba(181,146,95,0.11), transparent 36%);
-pointer-events:none;
-}
-
-.hero-panel{
-text-align:center;
-padding:58px 34px;
-}
-
-.hero-panel h2{
-font-family:"Playfair Display",serif;
-font-size:52px;
-font-weight:600;
-margin:8px 0 14px;
-line-height:1.08;
-color:#3f3123;
-}
-
-.hero-panel p{
-color:var(--muted);
-margin:0 auto;
-max-width:670px;
-font-size:16px;
-line-height:1.9;
-}
-
-.main-kicker{
-display:inline-block;
-letter-spacing:.22em;
-text-transform:uppercase;
-font-size:11px;
-font-weight:600;
-color:#9b8058;
-margin:0;
-}
-
-.hero-divider{
-width:110px;
-height:1px;
-background:linear-gradient(90deg, transparent, #c9a06a, transparent);
-margin:0 auto 12px;
-}
-
-.section-title{
-font-family:"Playfair Display",serif;
-font-size:40px;
-font-weight:600;
-line-height:1.15;
-margin:0 0 24px;
-text-align:center;
-color:#433320;
-}
-
-.couple-grid{
+min-height:100svh;
+padding:90px 8vw 68px;
 display:grid;
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:22px;
-}
-
-.person{
-border:1px solid #ebdcc5;
-border-radius:20px;
-padding:26px 24px;
-background:linear-gradient(180deg, #fff 0%, #fff9ef 100%);
-text-align:center;
-position:relative;
+align-items:center;
+scroll-snap-align:start;
+scroll-snap-stop:always;
 overflow:hidden;
+isolation:isolate;
 }
 
-.person::before{
-content:"";
+.scene-bg,
+.scene-video,
+.scene-overlay{
 position:absolute;
 inset:0;
-background:linear-gradient(145deg, rgba(255,255,255,0.6), transparent 40%);
-pointer-events:none;
 }
 
-.person small{
-text-transform:uppercase;
-letter-spacing:.2em;
-font-size:10px;
-font-weight:700;
-color:#9a8261;
+.scene-bg{
+z-index:0;
+background-position:center;
+background-size:cover;
+filter:saturate(.92) brightness(.72);
 }
 
-.person h3{
-font-family:"Playfair Display",serif;
-font-size:42px;
-line-height:1.1;
-margin:14px 0 10px;
-font-weight:600;
-color:var(--gold);
+.scene-video{
+z-index:1;
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:.45;
+filter:saturate(.9) contrast(1.02);
 }
 
-.person p{
+.scene-overlay{
+z-index:2;
+background:
+radial-gradient(circle at 18% 18%, rgba(213,170,110,0.22), transparent 42%),
+radial-gradient(circle at 82% 22%, rgba(97,122,114,0.2), transparent 46%),
+linear-gradient(rgba(6,6,6,0.62),rgba(6,6,6,0.66));
+}
+
+.scene-inner{
+position:relative;
+z-index:3;
+width:min(980px,100%);
+margin:0 auto;
+}
+
+.editorial{
+background:var(--glass);
+backdrop-filter:blur(8px);
+border:1px solid var(--line-soft);
+border-radius:32px;
+padding:clamp(28px,4vw,56px);
+}
+
+.scene-flag{
 margin:0;
-color:#6b5f52;
-font-size:14px;
+font-size:11px;
+font-weight:500;
+letter-spacing:.24em;
+text-transform:uppercase;
+color:rgba(255,255,255,0.74);
+}
+
+.scene-title{
+margin:10px 0 12px;
+font-family:"Italiana",serif;
+font-size:clamp(42px,7vw,86px);
+line-height:1.02;
+font-weight:400;
+letter-spacing:.03em;
+}
+
+.scene-subtitle{
+margin:0;
+font-size:16px;
+color:var(--text-soft);
+max-width:700px;
 line-height:1.8;
 }
 
-.event-grid{
+.divider{
+margin:16px 0;
+width:120px;
+height:1px;
+background:linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+}
+
+.scroll-hint{
+margin:18px 0 0;
+font-size:11px;
+letter-spacing:.16em;
+text-transform:uppercase;
+color:rgba(255,255,255,0.66);
+}
+
+.couple-grid{
+margin-top:20px;
 display:grid;
 grid-template-columns:repeat(2,minmax(0,1fr));
-gap:20px;
+gap:34px;
 }
 
-.event-card{
-border-radius:20px;
-padding:26px 24px 24px;
-background:linear-gradient(170deg,#fff 0%, #fff8ed 100%);
-border:1px solid #eadbc3;
-position:relative;
-overflow:hidden;
+.person{
+padding:0 6px;
+border-top:1px solid rgba(255,255,255,0.32);
+border-bottom:1px solid rgba(255,255,255,0.22);
+text-align:center;
 }
 
-.event-card::before{
-content:"";
-position:absolute;
-inset:0 auto auto 0;
-height:3px;
-width:100%;
-background:linear-gradient(90deg, #b68f5b, #e2c28f, #b68f5b);
-}
-
-.event-card h4{
-font-family:"Playfair Display",serif;
-font-size:30px;
+.person small{
+display:block;
+margin:16px 0 8px;
+font-size:10px;
 font-weight:600;
-margin:6px 0 8px;
-color:#433321;
+letter-spacing:.2em;
+text-transform:uppercase;
+color:rgba(255,255,255,0.74);
+}
+
+.person h3{
+margin:0;
+font-family:"Italiana",serif;
+font-size:clamp(34px,5vw,54px);
+font-weight:400;
+line-height:1.05;
+color:#f5d6a4;
+}
+
+.person p{
+margin:12px 0 18px;
+font-size:14px;
+color:var(--text-soft);
+line-height:1.85;
+}
+
+.event-layout{
+margin-top:24px;
+display:grid;
+grid-template-columns:repeat(2,minmax(0,1fr));
+gap:18px;
+}
+
+.event-item{
+background:var(--glass-strong);
+border:1px solid var(--line-soft);
+border-radius:22px;
+padding:20px 18px 18px;
 }
 
 .event-meta{
 margin:0;
-font-size:11px;
-font-weight:700;
+font-size:10px;
 letter-spacing:.2em;
 text-transform:uppercase;
-color:#a1855f;
+color:rgba(255,255,255,0.68);
 }
 
-.event-time{
-margin:0;
-font-size:16px;
-font-weight:600;
-color:#5d4f3f;
+.event-item h4{
+margin:8px 0 10px;
+font-family:"Italiana",serif;
+font-size:34px;
+font-weight:400;
+color:#f0c98e;
 }
 
-.event-place{
-margin-top:10px;
-font-size:14px;
-color:#695c4c;
-line-height:1.8;
+.event-item p{
+margin:2px 0;
+font-size:15px;
+line-height:1.75;
+color:var(--text-soft);
 }
 
-.map-wrap{
-text-align:center;
+.location-wrap{
+max-width:760px;
 }
 
 .map-btn{
 display:inline-block;
-text-decoration:none;
-margin-top:16px;
-background:linear-gradient(135deg,#5f725d,#425641);
-color:#fff;
+margin-top:18px;
 padding:12px 24px;
 border-radius:999px;
+text-decoration:none;
+background:linear-gradient(135deg,#5e7367,#3d4f46);
+color:#fff;
 font-size:14px;
 font-weight:600;
-transition:transform .2s ease,background .2s ease;
+letter-spacing:.04em;
+transition:transform .2s ease,filter .2s ease;
 }
 
 .map-btn:hover{
 transform:translateY(-2px);
-background:#394c39;
+filter:brightness(1.06);
 }
 
-.rsvp{
-text-align:center;
+.closing-note{
+max-width:780px;
 }
 
-.rsvp strong{
-color:#4f3d2a;
-}
-
-.rsvp p{
-max-width:690px;
-margin:0 auto;
-line-height:1.9;
-color:#5f5448;
+.closing-note strong{
+color:#f4d39f;
+font-weight:600;
 }
 
 .footer-note{
-text-align:center;
+margin-top:18px;
 font-size:14px;
-color:#786c60;
-margin-top:20px;
 letter-spacing:.04em;
+color:rgba(255,255,255,0.72);
 }
 
 .reveal{
 opacity:0;
-transform:translateY(24px);
+transform:translateY(26px);
 }
 
 .loaded .reveal{
 animation:fadeUp .8s ease forwards;
 }
 
-.loaded .delay-1{animation-delay:.1s;}
-.loaded .delay-2{animation-delay:.2s;}
-.loaded .delay-3{animation-delay:.3s;}
-.loaded .delay-4{animation-delay:.4s;}
-.loaded .delay-5{animation-delay:.5s;}
+.loaded .delay-1{animation-delay:.08s;}
+.loaded .delay-2{animation-delay:.16s;}
+.loaded .delay-3{animation-delay:.24s;}
+.loaded .delay-4{animation-delay:.32s;}
+.loaded .delay-5{animation-delay:.4s;}
 
 @keyframes fadeUp{
-from{opacity:0;transform:translateY(24px);}
+from{opacity:0;transform:translateY(26px);}
 to{opacity:1;transform:translateY(0);}
 }
 
-@keyframes heroIn{
-from{opacity:0;transform:translateY(16px) scale(.98);}
-to{opacity:1;transform:translateY(0) scale(1);}
-}
-
-@keyframes slowZoom{
+@keyframes coverZoom{
 from{transform:scale(1.04);}
 to{transform:scale(1.12);}
 }
 
-@media (max-width:860px){
-.cover-card{width:min(500px,100%);}
-.panel{padding:36px 26px;}
-.hero-panel{padding:46px 24px;}
-.hero-panel h2{font-size:42px;}
-.section-title{font-size:36px;}
-.person h3{font-size:36px;}
-.event-card h4{font-size:26px;}
-.couple-grid,.event-grid{grid-template-columns:1fr;}
+@media (max-width:900px){
+.scene{
+padding:84px 7vw 58px;
+}
+.couple-grid,
+.event-layout{
+grid-template-columns:1fr;
+gap:14px;
+}
+.scene-title{font-size:clamp(38px,11vw,62px);}
 }
 
 @media (max-width:560px){
-.cover-card{padding:28px 20px;}
-.panel{padding:28px 18px;}
-.hero-panel{padding:40px 18px;}
-.hero-panel h2{font-size:34px;}
-.section-title{font-size:30px;}
-.person h3{font-size:32px;}
-.event-card h4{font-size:24px;}
-.corner-svg{
-width:108px;
-height:108px;
-opacity:.36;
-}
+.cover-card{padding:32px 18px;}
+.open-btn{width:100%;}
+.story-progress{right:10px;gap:8px;}
+.story-dot{width:8px;height:8px;}
+.editorial{padding:24px 18px;border-radius:24px;}
+.scene-subtitle{font-size:14px;line-height:1.75;}
 }
 
 @media (prefers-reduced-motion: reduce){
-.cover-video{
+body{
+scroll-snap-type:none;
+transition:none;
+}
+.cover-video,
+.scene-video{
 display:none;
 animation:none;
+}
+.scene{
+scroll-snap-align:none;
+scroll-snap-stop:normal;
 }
 .reveal{
 opacity:1;
@@ -530,7 +497,7 @@ animation:none;
 }
 </style>
 </head>
-<body class="is-locked">
+<body class="is-locked" data-scene="opening">
 <section class="cover" id="cover">
 <div class="cover-media" aria-hidden="true">
 <video class="cover-video" autoplay muted loop playsinline preload="metadata">
@@ -538,22 +505,6 @@ animation:none;
 </video>
 </div>
 <div class="cover-overlay" aria-hidden="true"></div>
-<svg class="corner-svg corner-top-left" viewBox="0 0 200 200" aria-hidden="true">
-<path d="M20 180 C20 95 78 28 164 20"></path>
-<path class="soft" d="M36 168 C38 106 82 58 146 36"></path>
-<path d="M78 106 C90 90 104 79 122 72"></path>
-<path d="M76 108 C64 91 50 78 34 70"></path>
-<circle class="soft" cx="122" cy="72" r="6"></circle>
-<circle class="soft" cx="34" cy="70" r="4.5"></circle>
-</svg>
-<svg class="corner-svg corner-bottom-right" viewBox="0 0 200 200" aria-hidden="true">
-<path d="M20 180 C20 95 78 28 164 20"></path>
-<path class="soft" d="M36 168 C38 106 82 58 146 36"></path>
-<path d="M78 106 C90 90 104 79 122 72"></path>
-<path d="M76 108 C64 91 50 78 34 70"></path>
-<circle class="soft" cx="122" cy="72" r="6"></circle>
-<circle class="soft" cx="34" cy="70" r="4.5"></circle>
-</svg>
 <div class="cover-card">
 <p class="kicker">Undangan Pernikahan</p>
 <h1>Arka &amp; Livia</h1>
@@ -565,19 +516,44 @@ animation:none;
 </section>
 
 <main id="content" class="hidden">
-<section class="panel hero-panel reveal delay-1">
-<p class="main-kicker">12 Desember 2026</p>
-<div class="hero-divider"></div>
-<h2>Assalamu'alaikum Warahmatullahi Wabarakatuh</h2>
-<p>
-Dengan penuh rasa syukur atas kasih dan karunia Tuhan Yang Maha Esa,
-kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri momen sakral
-pernikahan putra-putri kami.
+<nav class="story-progress" aria-label="Progress cerita undangan">
+<button class="story-dot active" type="button" data-target="opening" aria-label="Tanggal"></button>
+<button class="story-dot" type="button" data-target="couple" aria-label="Mempelai"></button>
+<button class="story-dot" type="button" data-target="event" aria-label="Acara"></button>
+<button class="story-dot" type="button" data-target="location" aria-label="Lokasi"></button>
+<button class="story-dot" type="button" data-target="closing" aria-label="Penutup"></button>
+</nav>
+
+<section class="scene reveal delay-1" id="scene-opening" data-scene="opening">
+<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
+<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+</video>
+<div class="scene-overlay" aria-hidden="true"></div>
+<div class="scene-inner">
+<div class="editorial">
+<p class="scene-flag">Save The Date</p>
+<h2 class="scene-title">12 Desember 2026</h2>
+<div class="divider"></div>
+<p class="scene-subtitle">
+Assalamu'alaikum Warahmatullahi Wabarakatuh. Dengan penuh rasa syukur atas kasih dan karunia Tuhan Yang Maha Esa,
+kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kami.
 </p>
+<p class="scroll-hint">Scroll untuk melanjutkan</p>
+</div>
+</div>
 </section>
 
-<section class="panel reveal delay-2">
-<h3 class="section-title">Mempelai</h3>
+<section class="scene reveal delay-2" id="scene-couple" data-scene="couple">
+<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
+<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+</video>
+<div class="scene-overlay" aria-hidden="true"></div>
+<div class="scene-inner">
+<div class="editorial">
+<p class="scene-flag">The Couple</p>
+<h2 class="scene-title">Mempelai</h2>
 <div class="couple-grid">
 <article class="person">
 <small>Mempelai Pria</small>
@@ -590,45 +566,76 @@ pernikahan putra-putri kami.
 <p>Putri kedua dari<br>Bapak Pramono &amp; Ibu Wulan Sari</p>
 </article>
 </div>
-</section>
-
-<section class="panel reveal delay-3">
-<h3 class="section-title">Waktu &amp; Tempat</h3>
-<div class="event-grid">
-<article class="event-card">
-<p class="event-meta">Rangkaian Pertama</p>
-<h4>Akad Nikah</h4>
-<p class="event-time">Sabtu, 12 Desember 2026</p>
-<p class="event-time">08.00 WIB - selesai</p>
-<p class="event-place">Masjid Al-Ikhlas<br>Jl. Melati Indah No. 12, Jakarta Selatan</p>
-</article>
-<article class="event-card">
-<p class="event-meta">Rangkaian Kedua</p>
-<h4>Resepsi</h4>
-<p class="event-time">Sabtu, 12 Desember 2026</p>
-<p class="event-time">11.00 WIB - 14.00 WIB</p>
-<p class="event-place">Gedung Serbaguna Cempaka<br>Jl. Anggrek Raya No. 8, Jakarta Selatan</p>
-</article>
+</div>
 </div>
 </section>
 
-<section class="panel map-wrap reveal delay-4">
-<h3 class="section-title">Lokasi Acara</h3>
-<p>
-Untuk kemudahan perjalanan, silakan buka navigasi digital melalui tombol berikut.
-</p>
-<a class="map-btn" href="#" target="_blank" rel="noopener noreferrer">Buka Google Maps</a>
+<section class="scene reveal delay-3" id="scene-event" data-scene="event">
+<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
+<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+</video>
+<div class="scene-overlay" aria-hidden="true"></div>
+<div class="scene-inner">
+<div class="editorial">
+<p class="scene-flag">Schedule</p>
+<h2 class="scene-title">Waktu &amp; Tempat</h2>
+<div class="event-layout">
+<article class="event-item">
+<p class="event-meta">Rangkaian Pertama</p>
+<h4>Akad Nikah</h4>
+<p>Sabtu, 12 Desember 2026</p>
+<p>08.00 WIB - selesai</p>
+<p>Masjid Al-Ikhlas<br>Jl. Melati Indah No. 12, Jakarta Selatan</p>
+</article>
+<article class="event-item">
+<p class="event-meta">Rangkaian Kedua</p>
+<h4>Resepsi</h4>
+<p>Sabtu, 12 Desember 2026</p>
+<p>11.00 WIB - 14.00 WIB</p>
+<p>Gedung Serbaguna Cempaka<br>Jl. Anggrek Raya No. 8, Jakarta Selatan</p>
+</article>
+</div>
+</div>
+</div>
 </section>
 
-<section class="panel rsvp reveal delay-5">
-<h3 class="section-title">Doa Restu</h3>
-<p>
-Merupakan suatu kehormatan dan kebahagiaan yang tak ternilai bagi kami,
-apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu
-untuk perjalanan baru kami.
+<section class="scene reveal delay-4" id="scene-location" data-scene="location">
+<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
+<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+</video>
+<div class="scene-overlay" aria-hidden="true"></div>
+<div class="scene-inner">
+<div class="editorial location-wrap">
+<p class="scene-flag">Direction</p>
+<h2 class="scene-title">Lokasi Acara</h2>
+<p class="scene-subtitle">
+Agar perjalanan lebih nyaman, silakan buka navigasi digital melalui tombol berikut.
 </p>
-<p style="margin-top:16px;"><strong>Wassalamu'alaikum Warahmatullahi Wabarakatuh</strong></p>
+<a class="map-btn" href="#" target="_blank" rel="noopener noreferrer">Buka Google Maps</a>
+</div>
+</div>
+</section>
+
+<section class="scene reveal delay-5" id="scene-closing" data-scene="closing">
+<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
+<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+<source src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4" type="video/mp4">
+</video>
+<div class="scene-overlay" aria-hidden="true"></div>
+<div class="scene-inner">
+<div class="editorial closing-note">
+<p class="scene-flag">Blessing</p>
+<h2 class="scene-title">Doa Restu</h2>
+<p class="scene-subtitle">
+Merupakan suatu kehormatan dan kebahagiaan yang tak ternilai bagi kami, apabila Bapak/Ibu/Saudara/i
+berkenan hadir dan memberikan doa restu untuk perjalanan baru kami.
+</p>
+<p class="scene-subtitle" style="margin-top:16px;"><strong>Wassalamu'alaikum Warahmatullahi Wabarakatuh</strong></p>
 <p class="footer-note">Hormat kami, keluarga besar Arka &amp; Livia</p>
+</div>
+</div>
 </section>
 </main>
 
@@ -648,10 +655,73 @@ recipientEl.textContent = cleaned;
 }
 }
 
+let sceneObserverInitialized = false;
+
+function setActiveScene(scene){
+if(!scene){
+return;
+}
+
+const sceneName = scene.dataset.scene;
+document.body.setAttribute("data-scene", sceneName);
+
+document.querySelectorAll(".story-dot").forEach(function(dot){
+dot.classList.toggle("active", dot.dataset.target === sceneName);
+});
+
+document.querySelectorAll(".scene-video").forEach(function(video){
+if(video.closest(".scene") === scene){
+video.play().catch(function(){});
+}else{
+video.pause();
+}
+});
+}
+
+function initSceneObserver(){
+if(sceneObserverInitialized){
+return;
+}
+
+const scenes = document.querySelectorAll(".scene[data-scene]");
+if(!scenes.length){
+return;
+}
+
+const observer = new IntersectionObserver(function(entries){
+entries.forEach(function(entry){
+if(entry.isIntersecting){
+setActiveScene(entry.target);
+}
+});
+},{
+threshold:0.6
+});
+
+scenes.forEach(function(scene){
+observer.observe(scene);
+});
+
+sceneObserverInitialized = true;
+}
+
+function initProgressNavigation(){
+const dots = document.querySelectorAll(".story-dot");
+dots.forEach(function(dot){
+dot.addEventListener("click", function(){
+const target = document.querySelector('[data-scene="' + dot.dataset.target + '"]');
+if(target){
+target.scrollIntoView({behavior:"smooth",block:"start"});
+}
+});
+});
+}
+
 function openInvite(){
 const cover = document.getElementById("cover");
 const content = document.getElementById("content");
 const coverVideo = document.querySelector(".cover-video");
+const firstScene = document.querySelector('.scene[data-scene="opening"]');
 
 cover.classList.add("fade-out");
 setTimeout(function(){
@@ -661,11 +731,16 @@ document.body.classList.remove("is-locked");
 if(coverVideo){
 coverVideo.pause();
 }
+initSceneObserver();
+if(firstScene){
+setActiveScene(firstScene);
+}
 window.scrollTo(0,0);
 },260);
 }
 
 setRecipientName();
+initProgressNavigation();
 </script>
 </body>
 </html>

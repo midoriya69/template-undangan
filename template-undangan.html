@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Undangan Pernikahan</title>
+
+<style>
+
+body{
+margin:0;
+font-family: 'Segoe UI', sans-serif;
+background:#f8f5f2;
+color:#444;
+text-align:center;
+}
+
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
+url("https://images.unsplash.com/photo-1522673607200-164d1b6ce486");
+background-size:cover;
+color:white;
+}
+
+.hero h1{
+font-size:48px;
+margin:10px 0;
+}
+
+.hero p{
+font-size:20px;
+}
+
+button{
+padding:12px 25px;
+font-size:16px;
+border:none;
+background:#c9a96e;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+section{
+padding:60px 20px;
+}
+
+.nama{
+font-size:40px;
+color:#c9a96e;
+margin:20px 0;
+}
+
+.card{
+max-width:600px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:10px;
+box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.countdown{
+display:flex;
+justify-content:center;
+gap:20px;
+margin-top:20px;
+}
+
+.time{
+font-size:30px;
+font-weight:bold;
+}
+
+.map-btn{
+margin-top:20px;
+display:inline-block;
+background:#c9a96e;
+padding:10px 20px;
+color:white;
+text-decoration:none;
+border-radius:5px;
+}
+
+footer{
+margin-top:40px;
+padding:20px;
+background:#eee;
+}
+
+.hidden{
+display:none;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="hero" id="cover">
+
+<p>Undangan Pernikahan</p>
+<h1>Andi & Siti</h1>
+
+<p>Kepada Yth.</p>
+<p>Bapak / Ibu / Saudara</p>
+
+<button onclick="openInvite()">Buka Undangan</button>
+
+</div>
+
+
+<div id="content" class="hidden">
+
+
+<section>
+
+<h2>Assalamu’alaikum Warahmatullahi Wabarakatuh</h2>
+
+<p>
+Dengan memohon rahmat dan ridho Allah SWT,  
+kami bermaksud menyelenggarakan pernikahan:
+</p>
+
+<div class="nama">Andi Pratama</div>
+<p>Putra dari Bapak Ahmad & Ibu Lina</p>
+
+<div class="nama">&</div>
+
+<div class="nama">Siti Aisyah</div>
+<p>Putri dari Bapak Budi & Ibu Rina</p>
+
+</section>
+
+
+<section>
+
+<div class="card">
+
+<h2>Hari Bahagia</h2>
+
+<p>Minggu, 20 Desember 2026</p>
+<p>Pukul 10:00 WIB</p>
+
+<div class="countdown">
+
+<div>
+<div class="time" id="days">0</div>
+Hari
+</div>
+
+<div>
+<div class="time" id="hours">0</div>
+Jam
+</div>
+
+<div>
+<div class="time" id="minutes">0</div>
+Menit
+</div>
+
+<div>
+<div class="time" id="seconds">0</div>
+Detik
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section>
+
+<h2>Lokasi Acara</h2>
+
+<p>Gedung Serbaguna Bahagia</p>
+<p>Jl. Kebahagiaan No.10</p>
+
+<a class="map-btn"
+href="https://maps.google.com"
+target="_blank">
+
+Buka Google Maps
+
+</a>
+
+</section>
+
+
+<footer>
+
+<p>Merupakan suatu kehormatan dan kebahagiaan bagi kami  
+apabila Bapak/Ibu/Saudara berkenan hadir.</p>
+
+<p>Terima kasih</p>
+
+<p>Andi & Siti</p>
+
+</footer>
+
+
+</div>
+
+
+<script>
+
+function openInvite(){
+
+document.getElementById("cover").style.display="none";
+document.getElementById("content").classList.remove("hidden");
+
+}
+
+var targetDate = new Date("Dec 20, 2026 10:00:00").getTime();
+
+var timer = setInterval(function(){
+
+var now = new Date().getTime();
+var distance = targetDate - now;
+
+var days = Math.floor(distance / (1000*60*60*24));
+var hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
+var minutes = Math.floor((distance % (1000*60*60))/(1000*60));
+var seconds = Math.floor((distance % (1000*60))/1000);
+
+document.getElementById("days").innerHTML = days;
+document.getElementById("hours").innerHTML = hours;
+document.getElementById("minutes").innerHTML = minutes;
+document.getElementById("seconds").innerHTML = seconds;
+
+},1000);
+
+</script>
+
+</body>
+</html>

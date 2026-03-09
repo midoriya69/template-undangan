@@ -14,7 +14,10 @@ font-family:'Segoe UI',sans-serif;
 background:#f8f5f2;
 color:#444;
 text-align:center;
+overflow-x:hidden;
 }
+
+/* cover */
 
 .hero{
 height:100vh;
@@ -26,15 +29,19 @@ background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
 url("https://images.unsplash.com/photo-1522673607200-164d1b6ce486");
 background-size:cover;
 color:white;
+position:relative;
+overflow:hidden;
 }
+
+/* animasi teks */
 
 .hero h1{
 font-size:48px;
-margin:10px 0;
+animation:fadeUp 2s ease;
 }
 
 .hero p{
-font-size:20px;
+animation:fadeUp 2.5s ease;
 }
 
 button{
@@ -45,7 +52,38 @@ background:#c9a96e;
 color:white;
 border-radius:5px;
 cursor:pointer;
+margin-top:20px;
+animation:fadeUp 3s ease;
 }
+
+/* bunga */
+
+.flower{
+position:absolute;
+top:-50px;
+font-size:20px;
+animation:fall linear infinite;
+opacity:0.8;
+}
+
+@keyframes fall{
+to{
+transform:translateY(110vh) rotate(360deg);
+}
+}
+
+@keyframes fadeUp{
+from{
+opacity:0;
+transform:translateY(30px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* section */
 
 section{
 padding:60px 20px;
@@ -57,43 +95,6 @@ color:#c9a96e;
 margin:20px 0;
 }
 
-.card{
-max-width:600px;
-margin:auto;
-background:white;
-padding:30px;
-border-radius:10px;
-box-shadow:0 10px 25px rgba(0,0,0,0.1);
-}
-
-.countdown{
-display:flex;
-justify-content:center;
-gap:20px;
-margin-top:20px;
-}
-
-.time{
-font-size:30px;
-font-weight:bold;
-}
-
-.map-btn{
-margin-top:20px;
-display:inline-block;
-background:#c9a96e;
-padding:10px 20px;
-color:white;
-text-decoration:none;
-border-radius:5px;
-}
-
-footer{
-margin-top:40px;
-padding:20px;
-background:#eee;
-}
-
 .hidden{
 display:none;
 }
@@ -101,8 +102,8 @@ display:none;
 </style>
 </head>
 
-
 <body>
+
 
 <div class="hero" id="cover">
 
@@ -119,101 +120,29 @@ display:none;
 
 <div id="content" class="hidden">
 
-
 <section>
 
 <h2>Assalamu’alaikum Warahmatullahi Wabarakatuh</h2>
 
 <p>
-Dengan memohon rahmat dan ridho Tuhan Yang Maha Esa,  
+Dengan memohon rahmat Tuhan Yang Maha Esa,
 kami bermaksud menyelenggarakan pernikahan:
 </p>
 
 <div class="nama">Arka Mahendra</div>
-<p>Putra dari Bapak Surya Mahendra & Ibu Ratna Dewi</p>
 
 <div class="nama">&</div>
 
 <div class="nama">Livia Prameswari</div>
-<p>Putri dari Bapak Aditya Prameswara & Ibu Melati Sari</p>
 
 </section>
-
-
-<section>
-
-<div class="card">
-
-<h2>Hari Bahagia</h2>
-
-<p>Minggu, 20 Desember 2026</p>
-<p>Pukul 10:00 WIB</p>
-
-<div class="countdown">
-
-<div>
-<div class="time" id="days">0</div>
-Hari
-</div>
-
-<div>
-<div class="time" id="hours">0</div>
-Jam
-</div>
-
-<div>
-<div class="time" id="minutes">0</div>
-Menit
-</div>
-
-<div>
-<div class="time" id="seconds">0</div>
-Detik
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-
-<section>
-
-<h2>Lokasi Acara</h2>
-
-<p>Gedung Harmoni Nusantara</p>
-<p>Jl. Kenanga Indah No.25</p>
-
-<a class="map-btn"
-href="https://maps.google.com"
-target="_blank">
-
-Buka Google Maps
-
-</a>
-
-</section>
-
-
-<footer>
-
-<p>
-Merupakan suatu kehormatan dan kebahagiaan bagi kami  
-apabila Bapak/Ibu/Saudara berkenan hadir.
-</p>
-
-<p>Terima kasih</p>
-
-<p>Arka & Livia</p>
-
-</footer>
-
 
 </div>
 
 
 <script>
+
+/* buka undangan */
 
 function openInvite(){
 
@@ -222,24 +151,31 @@ document.getElementById("content").classList.remove("hidden");
 
 }
 
-var targetDate = new Date("Dec 20, 2026 10:00:00").getTime();
+/* bunga jatuh */
 
-setInterval(function(){
+function createFlower(){
 
-var now = new Date().getTime();
-var distance = targetDate - now;
+const flower = document.createElement("div");
 
-var days = Math.floor(distance / (1000*60*60*24));
-var hours = Math.floor((distance % (1000*60*60*24))/(1000*60*60));
-var minutes = Math.floor((distance % (1000*60*60))/(1000*60));
-var seconds = Math.floor((distance % (1000*60))/1000);
+flower.classList.add("flower");
 
-document.getElementById("days").innerHTML = days;
-document.getElementById("hours").innerHTML = hours;
-document.getElementById("minutes").innerHTML = minutes;
-document.getElementById("seconds").innerHTML = seconds;
+flower.innerHTML = "🌸";
 
-},1000);
+flower.style.left = Math.random()*100 + "vw";
+
+flower.style.animationDuration = (5 + Math.random()*5) + "s";
+
+flower.style.fontSize = (10 + Math.random()*20) + "px";
+
+document.body.appendChild(flower);
+
+setTimeout(()=>{
+flower.remove();
+},10000);
+
+}
+
+setInterval(createFlower,300);
 
 </script>
 

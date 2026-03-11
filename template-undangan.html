@@ -5,951 +5,1177 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Undangan Pernikahan Arka & Livia</title>
 <style>
-@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500;6..96,600&family=Cormorant+Garamond:wght@400;500;600;700&family=Parisienne&display=swap");
-/* test */
-:root{
---text:#f5efe6;
---text-soft:rgba(245,239,230,0.84);
---line:rgba(255,255,255,0.32);
---line-soft:rgba(255,255,255,0.2);
---gold:#d2ad72;
---gold-soft:#f0d5a6;
---glass:rgba(14,13,12,0.36);
---glass-strong:rgba(10,9,8,0.5);
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,ital,wght@6..96,0,400;6..96,0,500;6..96,1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Parisienne&display=swap");
+
+/* ─── CSS Custom Properties ─────────────────────────── */
+@property --spin {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
 }
 
-*{
-box-sizing:border-box;
+:root {
+  --text: #f5efe6;
+  --text-soft: rgba(245,239,230,.84);
+  --line: rgba(255,255,255,.32);
+  --line-soft: rgba(255,255,255,.18);
+  --gold: #d2ad72;
+  --gold-light: #f5dfa0;
+  --gold-soft: #f0d5a6;
+  --glass: rgba(14,13,12,.38);
+  --glass-strong: rgba(10,9,8,.52);
+  --shimmer: 4s;
 }
 
-html,body{
-margin:0;
-padding:0;
+/* ─── Reset ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--text);
+  background: #0d0c0b;
+  overflow-x: hidden;
+  scroll-snap-type: y proximity;
+  transition: background .75s ease;
+  font-size: 18px;
+  letter-spacing: .01em;
+}
+body.is-locked { height: 100vh; overflow: hidden; }
+
+body[data-scene="opening"]  { background: #191310; }
+body[data-scene="couple"]   { background: #18110f; }
+body[data-scene="event"]    { background: #151816; }
+body[data-scene="location"] { background: #111719; }
+body[data-scene="closing"]  { background: #17130f; }
+
+/* ─── Scroll Progress Bar ────────────────────────────── */
+.scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 2px;
+  width: 0%;
+  background: linear-gradient(90deg, #b8873a, var(--gold-light), var(--gold));
+  box-shadow: 0 0 10px rgba(210,173,114,.6);
+  z-index: 200;
+  transition: width .12s linear;
 }
 
-body{
-font-family:"Cormorant Garamond",serif;
-color:var(--text);
-background:#0d0c0b;
-overflow-x:hidden;
-scroll-snap-type:y proximity;
-transition:background .75s ease;
-font-size:18px;
-letter-spacing:.01em;
+/* ─── Twinkling Stars Layer ──────────────────────────── */
+.stars-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+.stars-s, .stars-m {
+  position: absolute;
+  top: 0; left: 0;
+  width: 1px; height: 1px;
+  border-radius: 50%;
+  background: transparent;
+}
+.stars-s {
+  box-shadow:
+    12vw 8vh 0 rgba(255,255,255,.25),
+    28vw 14vh 0 rgba(255,255,255,.18),
+    45vw 6vh 0 rgba(255,255,255,.3),
+    62vw 18vh 0 rgba(255,255,255,.2),
+    78vw 9vh 0 rgba(255,255,255,.28),
+    92vw 22vh 0 rgba(255,255,255,.15),
+    5vw 38vh 0 rgba(255,255,255,.2),
+    33vw 45vh 0 rgba(255,255,255,.22),
+    55vw 31vh 0 rgba(255,255,255,.18),
+    82vw 40vh 0 rgba(255,255,255,.25),
+    18vw 58vh 0 rgba(255,255,255,.2),
+    70vw 52vh 0 rgba(255,255,255,.16),
+    42vw 65vh 0 rgba(255,255,255,.22),
+    88vw 70vh 0 rgba(255,255,255,.18),
+    10vw 75vh 0 rgba(255,255,255,.24),
+    60vw 82vh 0 rgba(255,255,255,.16),
+    25vw 88vh 0 rgba(255,255,255,.2),
+    75vw 91vh 0 rgba(255,255,255,.14),
+    50vw 95vh 0 rgba(255,255,255,.18),
+    38vw 78vh 0 rgba(255,255,255,.22);
+  animation: twinkleS 4.5s ease-in-out infinite alternate;
+}
+.stars-m {
+  width: 2px; height: 2px;
+  box-shadow:
+    20vw 22vh 1px rgba(240,213,166,.3),
+    48vw 35vh 1px rgba(240,213,166,.22),
+    72vw 28vh 1px rgba(240,213,166,.28),
+    8vw 55vh 1px rgba(240,213,166,.2),
+    90vw 60vh 1px rgba(240,213,166,.26),
+    35vw 72vh 1px rgba(240,213,166,.18),
+    65vw 85vh 1px rgba(240,213,166,.24),
+    15vw 90vh 1px rgba(240,213,166,.2),
+    55vw 15vh 1px rgba(240,213,166,.28),
+    85vw 45vh 1px rgba(240,213,166,.18);
+  animation: twinkleM 6s ease-in-out infinite alternate;
+  animation-delay: 1.2s;
+}
+@keyframes twinkleS {
+  0%, 100% { opacity: .15; }
+  50% { opacity: .7; }
+}
+@keyframes twinkleM {
+  0%, 100% { opacity: .1; }
+  50% { opacity: .55; }
 }
 
-body.is-locked{
-height:100vh;
-overflow:hidden;
+/* ─── Cover ──────────────────────────────────────────── */
+.cover {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #fff;
+  z-index: 20;
+  overflow: hidden;
+  transition: opacity .6s ease, visibility .6s ease;
+}
+.cover-media, .cover-overlay {
+  position: absolute;
+  inset: 0;
+}
+.cover-media {
+  z-index: 0;
+  pointer-events: none;
+  background: url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1400&q=70") center/cover no-repeat;
+}
+.cover-video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  animation: coverZoom 18s ease-in-out infinite alternate;
+}
+.cover-overlay {
+  z-index: 1;
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(221,188,129,.28), transparent 45%),
+    radial-gradient(ellipse at 80% 15%, rgba(90,118,104,.22), transparent 45%),
+    linear-gradient(rgba(8,8,8,.7), rgba(8,8,8,.74));
+}
+.cover.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-body[data-scene="opening"]{background:#191310;}
-body[data-scene="couple"]{background:#18110f;}
-body[data-scene="event"]{background:#151816;}
-body[data-scene="location"]{background:#111719;}
-body[data-scene="closing"]{background:#17130f;}
+/* ─── Cover Card with Spinning Gold Border ───────────── */
+.cover-card-wrap {
+  position: relative;
+  z-index: 2;
+  width: min(560px, 100%);
+  border-radius: 30px;
+  padding: 1.5px;
+  background: conic-gradient(from var(--spin), transparent 50%, rgba(210,173,114,.85) 56%, rgba(255,248,220,1) 62%, rgba(210,173,114,.5) 68%, transparent 74%);
+  animation: spinBorder 5s linear infinite;
+  box-shadow: 0 0 40px rgba(210,173,114,.15), 0 20px 60px rgba(0,0,0,.45);
+}
+@keyframes spinBorder { to { --spin: 360deg; } }
 
-.cover{
-position:fixed;
-inset:0;
-display:grid;
-place-items:center;
-padding:24px;
-color:#fff;
-z-index:20;
-overflow:hidden;
-transition:opacity .55s ease,visibility .55s ease;
+/* Fallback for non-supporting browsers */
+@supports not (background: conic-gradient(from var(--spin), red, blue)) {
+  .cover-card-wrap {
+    background: rgba(210,173,114,.35);
+    animation: glowPulse 3s ease-in-out infinite;
+  }
+  @keyframes glowPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(210,173,114,.2); }
+    50% { box-shadow: 0 0 60px rgba(210,173,114,.5), 0 0 100px rgba(210,173,114,.15); }
+  }
 }
 
-.cover-media,
-.cover-overlay{
-position:absolute;
-inset:0;
+.cover-card {
+  background: rgba(14,12,10,.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 28.5px;
+  padding: 38px 30px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+/* Inner shimmer sweep */
+.cover-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,.04) 50%, transparent 70%);
+  background-size: 200% 200%;
+  animation: cardSweep 6s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes cardSweep {
+  0%   { background-position: 200% 50%; }
+  100% { background-position: -200% 50%; }
 }
 
-.cover-media{
-z-index:0;
-pointer-events:none;
-background:url("https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=1800&q=80") center/cover no-repeat;
+.kicker {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.78);
+  font-family: "Bodoni Moda", serif;
+  font-weight: 500;
 }
 
-.cover-video{
-width:100%;
-height:100%;
-object-fit:cover;
-transform:scale(1.06);
-animation:coverZoom 18s ease-in-out infinite alternate;
+.cover h1 {
+  margin: 14px 0 10px;
+  font-family: "Parisienne", cursive;
+  font-size: clamp(60px, 12vw, 104px);
+  font-weight: 400;
+  line-height: .95;
+  letter-spacing: .01em;
 }
 
-.cover-overlay{
-z-index:1;
-background:
-radial-gradient(circle at 20% 14%, rgba(221,188,129,0.25), transparent 40%),
-radial-gradient(circle at 80% 16%, rgba(90,118,104,0.2), transparent 42%),
-linear-gradient(rgba(8,8,8,0.72),rgba(8,8,8,0.72));
+/* ─── Gold Shimmer Text ──────────────────────────────── */
+@keyframes goldShimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
 }
-
-.cover.fade-out{
-opacity:0;
-visibility:hidden;
-pointer-events:none;
-}
-
-.cover-card{
-position:relative;
-z-index:2;
-width:min(560px,100%);
-background:rgba(14,12,10,0.56);
-backdrop-filter:blur(8px);
-border:1px solid rgba(255,255,255,0.24);
-border-radius:28px;
-padding:38px 30px;
-text-align:center;
-box-shadow:0 18px 50px rgba(0,0,0,0.36);
-}
-
-.cover-card::before,
-.cover-card::after{
-content:"";
-display:block;
-width:74px;
-height:1px;
-margin:0 auto;
-background:linear-gradient(90deg,transparent,rgba(255,255,255,0.72),transparent);
-}
-
-.cover-card::before{margin-bottom:14px;}
-.cover-card::after{margin-top:18px;}
-
-.kicker{
-margin:0;
-font-size:11px;
-letter-spacing:.22em;
-text-transform:uppercase;
-color:rgba(255,255,255,0.78);
-font-family:"Bodoni Moda",serif;
-font-weight:500;
-}
-
-.cover h1{
-margin:14px 0 10px;
-font-family:"Parisienne",cursive;
-font-size:clamp(66px,12vw,108px);
-font-weight:400;
-line-height:.95;
-letter-spacing:.01em;
-}
-
-.couple-title{
-width:100%;
-height:auto;
-margin:12px auto 14px;
-display:flex;
-flex-direction:column;
-align-items:center;
-justify-content:center;
-gap:2px;
-text-align:center;
-}
-
 .couple-title .name-top,
-.couple-title .name-bottom{
-display:block;
-line-height:.9;
-font-size:clamp(56px,10vw,92px);
+.couple-title .name-bottom {
+  display: block;
+  line-height: .9;
+  font-size: clamp(56px, 10vw, 92px);
+  background: linear-gradient(105deg, #a8742e 15%, #f5dfa0 38%, #fff8e7 50%, #f5dfa0 62%, #a8742e 85%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer var(--shimmer) linear infinite;
+}
+.couple-title .amp {
+  display: block;
+  font-family: "Bodoni Moda", serif;
+  font-size: clamp(20px, 3.2vw, 30px);
+  font-weight: 500;
+  line-height: 1;
+  opacity: .82;
+  color: #e9d6b6;
+  -webkit-text-fill-color: #e9d6b6;
+  margin: 2px 0;
+}
+.to-line { margin: 6px 0; font-size: 18px; color: var(--text-soft); }
+.recipient-line { margin: 8px 0 12px; }
+#recipient-name {
+  display: block;
+  font-family: "Bodoni Moda", serif;
+  font-size: clamp(24px, 4vw, 34px);
+  font-style: italic;
+  font-weight: 500;
+  color: #f0ddbb;
+  letter-spacing: .03em;
+  text-shadow: 0 5px 20px rgba(0,0,0,.45);
 }
 
-.couple-title .amp{
-display:block;
-font-family:"Bodoni Moda",serif;
-font-size:clamp(20px,3.2vw,30px);
-font-weight:500;
-line-height:1;
-opacity:.82;
-color:#e9d6b6;
-margin:2px 0;
+/* ─── Open Button with shimmer ───────────────────────── */
+.open-btn {
+  position: relative;
+  overflow: hidden;
+  margin-top: 18px;
+  border: none;
+  border-radius: 999px;
+  padding: 13px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  font-family: "Cormorant Garamond", serif;
+  color: #fff;
+  cursor: pointer;
+  background: linear-gradient(135deg, #d7b985, #b58a50, #d7b985);
+  background-size: 200% 100%;
+  box-shadow: 0 10px 28px rgba(0,0,0,.32), 0 0 20px rgba(210,173,114,.2);
+  transition: transform .2s ease, box-shadow .2s ease;
+  animation: btnGradient 3s ease infinite;
+}
+@keyframes btnGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.open-btn::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,.28), transparent);
+  transform: skewX(-20deg);
+  animation: btnSheen 3s ease-in-out infinite;
+}
+@keyframes btnSheen {
+  0%   { left: -100%; }
+  40%, 100% { left: 150%; }
+}
+.open-btn:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(0,0,0,.36), 0 0 30px rgba(210,173,114,.3); }
+
+/* ─── Main ───────────────────────────────────────────── */
+main { position: relative; width: 100%; }
+.hidden { display: none; }
+
+/* ─── Story Progress Nav ─────────────────────────────── */
+.story-progress {
+  position: fixed;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 12;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.story-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,.66);
+  background: rgba(255,255,255,.2);
+  cursor: pointer;
+  padding: 0;
+  transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+}
+.story-dot.active {
+  background: var(--gold-soft);
+  transform: scale(1.2);
+  box-shadow: 0 0 8px rgba(240,213,166,.6);
 }
 
-.to-line{
-margin:6px 0;
-font-size:18px;
-color:var(--text-soft);
+/* ─── Scenes ─────────────────────────────────────────── */
+.scene {
+  position: relative;
+  min-height: 100svh;
+  padding: 90px 8vw 68px;
+  display: grid;
+  align-items: center;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overflow: hidden;
+  isolation: isolate;
+  opacity: .88;
+  filter: saturate(.9);
+  transition: opacity .65s ease, filter .65s ease;
 }
-
-.recipient-line{
-margin:8px 0 12px;
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(9,9,9,.65), transparent 22%, transparent 78%, rgba(9,9,9,.65));
 }
-
-#recipient-name{
-display:block;
-font-family:"Bodoni Moda",serif;
-font-size:clamp(24px,4vw,34px);
-font-style:italic;
-font-weight:500;
-color:#f0ddbb;
-letter-spacing:.03em;
-text-shadow:0 5px 16px rgba(0,0,0,0.4);
+.scene-bg, .scene-video, .scene-overlay { position: absolute; inset: 0; }
+.scene-bg {
+  z-index: 0;
+  background-position: center;
+  background-size: cover;
+  filter: saturate(.9) brightness(.68);
+  transform: translateY(calc(var(--parallax,0) * 26px)) scale(1.08);
+  transition: transform .55s ease, filter .55s ease, opacity .55s ease;
 }
-
-.open-btn{
-margin-top:18px;
-border:none;
-border-radius:999px;
-padding:12px 28px;
-font-size:16px;
-font-weight:600;
-letter-spacing:.04em;
-font-family:"Cormorant Garamond",serif;
-color:#fff;
-cursor:pointer;
-background:linear-gradient(135deg,#d7b985,#b58a50);
-box-shadow:0 10px 26px rgba(0,0,0,0.32);
-transition:transform .2s ease, box-shadow .2s ease;
+.scene-video {
+  z-index: 1;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: .4;
+  filter: saturate(.88) contrast(1.02);
+  transform: translateY(calc(var(--parallax,0) * 34px)) scale(1.12);
+  transition: transform .55s ease, opacity .55s ease, filter .55s ease;
 }
-
-.open-btn:hover{
-transform:translateY(-2px);
-box-shadow:0 14px 30px rgba(0,0,0,0.36);
+.scene-overlay {
+  z-index: 2;
+  background:
+    radial-gradient(ellipse at 18% 18%, rgba(213,170,110,.22), transparent 42%),
+    radial-gradient(ellipse at 82% 22%, rgba(97,122,114,.2), transparent 46%),
+    linear-gradient(rgba(6,6,6,.6), rgba(6,6,6,.64));
+  transition: opacity .55s ease;
 }
-
-main{
-position:relative;
-width:100%;
+.scene-inner {
+  position: relative;
+  z-index: 4;
+  width: min(980px, 100%);
+  margin: 0 auto;
+  transform: translateY(24px) scale(.984);
+  opacity: .82;
+  transition: transform .7s cubic-bezier(.16,1,.3,1), opacity .7s ease;
 }
-
-.hidden{
-display:none;
-}
-
-.story-progress{
-position:fixed;
-right:18px;
-top:50%;
-transform:translateY(-50%);
-z-index:12;
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-
-.story-dot{
-width:10px;
-height:10px;
-border-radius:50%;
-border:1px solid rgba(255,255,255,0.66);
-background:rgba(255,255,255,0.2);
-cursor:pointer;
-padding:0;
-}
-
-.story-dot.active{
-background:var(--gold-soft);
-transform:scale(1.14);
-}
-
-.scene{
-position:relative;
-min-height:100svh;
-padding:90px 8vw 68px;
-display:grid;
-align-items:center;
-scroll-snap-align:start;
-scroll-snap-stop:always;
-overflow:hidden;
-isolation:isolate;
-opacity:.9;
-filter:saturate(.92);
-transition:opacity .6s ease,filter .6s ease;
-}
-
-.scene::before{
-content:"";
-position:absolute;
-inset:0;
-z-index:2;
-pointer-events:none;
-background:
-linear-gradient(to bottom, rgba(9,9,9,0.62), transparent 22%, transparent 78%, rgba(9,9,9,0.62));
-}
-
-.scene-bg,
-.scene-video,
-.scene-overlay{
-position:absolute;
-inset:0;
-}
-
-.scene-bg{
-z-index:0;
-background-position:center;
-background-size:cover;
-filter:saturate(.92) brightness(.72);
-transform:translateY(calc(var(--parallax,0) * 26px)) scale(1.08);
-transition:transform .55s ease,filter .55s ease,opacity .55s ease;
-}
-
-.scene-video{
-z-index:1;
-width:100%;
-height:100%;
-object-fit:cover;
-opacity:.45;
-filter:saturate(.9) contrast(1.02);
-transform:translateY(calc(var(--parallax,0) * 34px)) scale(1.12);
-transition:transform .55s ease,opacity .55s ease,filter .55s ease;
-}
-
-.scene-overlay{
-z-index:2;
-background:
-radial-gradient(circle at 18% 18%, rgba(213,170,110,0.22), transparent 42%),
-radial-gradient(circle at 82% 22%, rgba(97,122,114,0.2), transparent 46%),
-linear-gradient(rgba(6,6,6,0.62),rgba(6,6,6,0.66));
-transition:opacity .55s ease;
-}
-
-.scene-inner{
-position:relative;
-z-index:4;
-width:min(980px,100%);
-margin:0 auto;
-transform:translateY(24px) scale(.985);
-opacity:.84;
-transition:transform .6s ease,opacity .6s ease;
-}
-
-.scene.is-active{
-opacity:1;
-filter:saturate(1);
-}
-
-.scene.is-active .scene-inner{
-transform:translateY(0) scale(1);
-opacity:1;
-}
-
-.scene.is-active .scene-video{
-opacity:.58;
-filter:saturate(1) contrast(1.08);
-}
-
-.scene.is-active .scene-bg{
-filter:saturate(1) brightness(.76);
-}
-
+.scene.is-active { opacity: 1; filter: saturate(1); }
+.scene.is-active .scene-inner { transform: translateY(0) scale(1); opacity: 1; }
+.scene.is-active .scene-video { opacity: .52; filter: saturate(1) contrast(1.08); }
+.scene.is-active .scene-bg { filter: saturate(1) brightness(.74); }
 .scene.is-prev .scene-inner,
-.scene.is-next .scene-inner{
-opacity:.92;
+.scene.is-next .scene-inner { opacity: .9; }
+
+/* ─── Editorial Card ─────────────────────────────────── */
+.editorial {
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--line-soft);
+  border-radius: 32px;
+  padding: clamp(28px, 4vw, 58px);
+  position: relative;
+  overflow: hidden;
+}
+/* Subtle corner accents */
+.editorial::before,
+.editorial::after {
+  content: "";
+  position: absolute;
+  width: 60px; height: 60px;
+  border-color: rgba(210,173,114,.35);
+  border-style: solid;
+  pointer-events: none;
+}
+.editorial::before {
+  top: 16px; left: 16px;
+  border-width: 1px 0 0 1px;
+  border-radius: 8px 0 0 0;
+}
+.editorial::after {
+  bottom: 16px; right: 16px;
+  border-width: 0 1px 1px 0;
+  border-radius: 0 0 8px 0;
 }
 
-.editorial{
-background:var(--glass);
-backdrop-filter:blur(8px);
-border:1px solid var(--line-soft);
-border-radius:32px;
-padding:clamp(28px,4vw,56px);
+/* ─── Scene Typography ───────────────────────────────── */
+.scene-flag {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-family: "Bodoni Moda", serif;
+}
+.scene-title {
+  margin: 10px 0 12px;
+  font-family: "Bodoni Moda", serif;
+  font-size: clamp(44px, 8vw, 90px);
+  line-height: 1.02;
+  font-weight: 500;
+  letter-spacing: .03em;
+}
+.scene-subtitle {
+  margin: 0;
+  font-size: 20px;
+  color: var(--text-soft);
+  max-width: 680px;
+  line-height: 1.85;
 }
 
-.scene-flag{
-margin:0;
-font-size:12px;
-font-weight:500;
-letter-spacing:.24em;
-text-transform:uppercase;
-color:rgba(255,255,255,0.74);
-font-family:"Bodoni Moda",serif;
+/* ─── SVG Ornament Divider ───────────────────────────── */
+.divider-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 18px 0;
+  max-width: 340px;
+}
+.divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+  opacity: .7;
+}
+.divider-icon {
+  opacity: .75;
+  flex-shrink: 0;
+  animation: ornamentPulse 4s ease-in-out infinite;
+}
+@keyframes ornamentPulse {
+  0%, 100% { opacity: .55; transform: scale(1); }
+  50% { opacity: .95; transform: scale(1.08); }
 }
 
-.scene-title{
-margin:10px 0 12px;
-font-family:"Bodoni Moda",serif;
-font-size:clamp(46px,8vw,92px);
-line-height:1.02;
-font-weight:500;
-letter-spacing:.03em;
+.scroll-hint {
+  margin: 20px 0 0;
+  font-size: 11px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  font-family: "Bodoni Moda", serif;
+  animation: scrollBounce 2.2s ease-in-out infinite;
+}
+@keyframes scrollBounce {
+  0%, 100% { opacity: .4; transform: translateY(0); }
+  50% { opacity: .85; transform: translateY(5px); }
 }
 
-.scene-subtitle{
-margin:0;
-font-size:21px;
-color:var(--text-soft);
-max-width:700px;
-line-height:1.8;
+/* ─── Verse / Ayat ───────────────────────────────────── */
+.verse-wrap {
+  margin-top: 20px;
+  padding: 14px 18px;
+  border-left: 2px solid rgba(210,173,114,.45);
+  background: rgba(0,0,0,.2);
+  border-radius: 0 10px 10px 0;
+}
+.verse-arabic {
+  display: block;
+  font-size: 22px;
+  color: var(--gold-light);
+  font-family: serif;
+  text-align: right;
+  margin-bottom: 8px;
+  line-height: 1.8;
+  direction: rtl;
+}
+.verse-id {
+  font-size: 14px;
+  font-style: italic;
+  color: rgba(255,255,255,.62);
+  line-height: 1.6;
 }
 
-.divider{
-margin:16px 0;
-width:120px;
-height:1px;
-background:linear-gradient(90deg, transparent, var(--gold-soft), transparent);
+/* ─── Countdown ──────────────────────────────────────── */
+.countdown-wrap {
+  margin-top: 22px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.cd-item {
+  text-align: center;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(210,173,114,.28);
+  border-radius: 14px;
+  padding: 12px 16px 10px;
+  min-width: 64px;
+  backdrop-filter: blur(4px);
+  transition: border-color .3s ease, box-shadow .3s ease;
+}
+.cd-item:hover {
+  border-color: rgba(210,173,114,.6);
+  box-shadow: 0 4px 16px rgba(210,173,114,.15);
+}
+.cd-num {
+  display: block;
+  font-family: "Bodoni Moda", serif;
+  font-size: 34px;
+  font-weight: 500;
+  color: var(--gold-light);
+  line-height: 1;
+  letter-spacing: .02em;
+}
+.cd-label {
+  display: block;
+  font-size: 9px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.55);
+  font-family: "Bodoni Moda", serif;
+  margin-top: 5px;
 }
 
-.scroll-hint{
-margin:18px 0 0;
-font-size:12px;
-letter-spacing:.16em;
-text-transform:uppercase;
-color:rgba(255,255,255,0.66);
-font-family:"Bodoni Moda",serif;
+/* ─── Couple Grid ────────────────────────────────────── */
+.couple-grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 30px;
+}
+.person {
+  padding: 0 6px;
+  border-top: 1px solid rgba(255,255,255,.28);
+  border-bottom: 1px solid rgba(255,255,255,.18);
+  text-align: center;
+}
+.person-photo {
+  width: min(230px, 70%);
+  aspect-ratio: 3/4;
+  margin: 18px auto 14px;
+  border-radius: 120px 120px 22px 22px;
+  overflow: hidden;
+  border: 1px solid rgba(210,173,114,.4);
+  box-shadow: 0 14px 40px rgba(0,0,0,.4), 0 0 0 4px rgba(210,173,114,.08);
+  background: rgba(255,255,255,.08);
+  transition: box-shadow .3s ease, transform .3s ease;
+}
+.person-photo:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 50px rgba(0,0,0,.45), 0 0 0 4px rgba(210,173,114,.2);
+}
+.person-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.person small {
+  display: block;
+  margin: 16px 0 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.7);
+}
+.person h3 {
+  margin: 0;
+  font-family: "Parisienne", cursive;
+  font-size: clamp(52px, 8.5vw, 88px);
+  font-weight: 400;
+  line-height: 1.05;
+  background: linear-gradient(105deg, #a8742e 15%, #f5dfa0 38%, #fff8e7 50%, #f5dfa0 62%, #a8742e 85%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: goldShimmer var(--shimmer) linear infinite;
+  animation-delay: 1.5s;
+}
+.person p {
+  margin: 12px 0 18px;
+  font-size: 17px;
+  color: var(--text-soft);
+  line-height: 1.88;
 }
 
-.couple-grid{
-margin-top:20px;
-display:grid;
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:34px;
+/* ─── Event Layout ───────────────────────────────────── */
+.event-layout {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap: 16px;
+}
+.event-item {
+  background: var(--glass-strong);
+  border: 1px solid var(--line-soft);
+  border-radius: 22px;
+  padding: 22px 20px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color .3s ease, transform .3s ease;
+}
+.event-item::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.event-item:hover { border-color: rgba(210,173,114,.35); transform: translateY(-3px); }
+.event-item:hover::before { opacity: 1; }
+.event-meta {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  font-family: "Bodoni Moda", serif;
+}
+.event-item h4 {
+  margin: 8px 0 12px;
+  font-family: "Bodoni Moda", serif;
+  font-size: clamp(32px, 5vw, 46px);
+  font-weight: 500;
+  color: #f0c98e;
+}
+.event-item p { margin: 3px 0; font-size: 17px; line-height: 1.75; color: var(--text-soft); }
+
+/* ─── Location ───────────────────────────────────────── */
+.location-wrap { max-width: 760px; }
+.map-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #5e7367, #3d4f46);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  font-family: "Cormorant Garamond", serif;
+  transition: transform .2s ease, filter .2s ease, box-shadow .2s ease;
+  box-shadow: 0 8px 24px rgba(0,0,0,.28);
+}
+.map-btn:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 12px 30px rgba(0,0,0,.34); }
+
+/* ─── Closing ────────────────────────────────────────── */
+.closing-note { max-width: 780px; }
+.closing-note strong { color: #f4d39f; font-weight: 600; }
+.footer-note {
+  margin-top: 20px;
+  font-size: 16px;
+  letter-spacing: .04em;
+  color: rgba(255,255,255,.7);
+  font-family: "Bodoni Moda", serif;
 }
 
-.person{
-padding:0 6px;
-border-top:1px solid rgba(255,255,255,0.32);
-border-bottom:1px solid rgba(255,255,255,0.22);
-text-align:center;
+/* ─── WhatsApp RSVP Button ───────────────────────────── */
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 20px;
+  padding: 13px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  background: linear-gradient(135deg, #2aad5c, #1e8449);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  font-family: "Cormorant Garamond", serif;
+  box-shadow: 0 8px 24px rgba(0,0,0,.3), 0 0 20px rgba(37,211,102,.15);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.whatsapp-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,.34), 0 0 30px rgba(37,211,102,.25); }
+
+/* ─── Reveal Animations ──────────────────────────────── */
+.reveal { opacity: 0; transform: translateY(28px); }
+.loaded .reveal { animation: fadeUp .85s cubic-bezier(.16,1,.3,1) forwards; }
+.loaded .delay-1 { animation-delay: .08s; }
+.loaded .delay-2 { animation-delay: .18s; }
+.loaded .delay-3 { animation-delay: .28s; }
+.loaded .delay-4 { animation-delay: .38s; }
+.loaded .delay-5 { animation-delay: .48s; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes coverZoom {
+  from { transform: scale(1.04); }
+  to   { transform: scale(1.12); }
 }
 
-.person-photo{
-width:min(240px,70%);
-aspect-ratio:3/4;
-margin:18px auto 14px;
-border-radius:120px 120px 22px 22px;
-overflow:hidden;
-border:1px solid rgba(255,255,255,0.38);
-box-shadow:0 14px 34px rgba(0,0,0,0.34);
-background:rgba(255,255,255,0.08);
+/* ─── Responsive ─────────────────────────────────────── */
+@media (max-width: 900px) {
+  .scene { padding: 84px 6vw 58px; }
+  .couple-grid, .event-layout { grid-template-columns: 1fr; gap: 14px; }
+  .scene-title { font-size: clamp(36px, 11vw, 60px); }
+  .countdown-wrap { gap: 8px; }
+  .cd-num { font-size: 28px; }
 }
 
-.person-photo img{
-width:100%;
-height:100%;
-object-fit:cover;
-display:block;
+@media (max-width: 768px) {
+  /* Disable videos on mobile = huge data saving */
+  .scene-video, .cover-video { display: none; }
+  .scene-bg { filter: saturate(.92) brightness(.62); }
+  .scene.is-active .scene-bg { filter: saturate(1) brightness(.7); }
 }
 
-.person small{
-display:block;
-margin:16px 0 8px;
-font-size:10px;
-font-weight:600;
-letter-spacing:.2em;
-text-transform:uppercase;
-color:rgba(255,255,255,0.74);
+@media (max-width: 560px) {
+  .cover-card { padding: 28px 16px; }
+  .open-btn { width: 100%; }
+  .story-progress { right: 10px; gap: 8px; }
+  .story-dot { width: 8px; height: 8px; }
+  .editorial { padding: 22px 16px; border-radius: 24px; }
+  .editorial::before, .editorial::after { width: 40px; height: 40px; }
+  .couple-title .name-top,
+  .couple-title .name-bottom { font-size: clamp(46px, 16vw, 68px); }
+  .to-line { font-size: 15px; }
+  .scene-subtitle { font-size: 17px; line-height: 1.72; }
+  .person-photo { width: min(200px, 70%); }
+  .person p, .event-item p { font-size: 16px; }
+  .footer-note { font-size: 14px; }
+  .verse-arabic { font-size: 18px; }
+  .cd-num { font-size: 24px; }
+  .cd-item { min-width: 52px; padding: 10px 10px 8px; }
 }
 
-.person h3{
-margin:0;
-font-family:"Parisienne",cursive;
-font-size:clamp(58px,9vw,92px);
-font-weight:400;
-line-height:1.05;
-color:#f7d8a5;
-}
-
-.person p{
-margin:12px 0 18px;
-font-size:18px;
-color:var(--text-soft);
-line-height:1.85;
-}
-
-.event-layout{
-margin-top:24px;
-display:grid;
-grid-template-columns:repeat(2,minmax(0,1fr));
-gap:18px;
-}
-
-.event-item{
-background:var(--glass-strong);
-border:1px solid var(--line-soft);
-border-radius:22px;
-padding:20px 18px 18px;
-}
-
-.event-meta{
-margin:0;
-font-size:11px;
-letter-spacing:.2em;
-text-transform:uppercase;
-color:rgba(255,255,255,0.68);
-font-family:"Bodoni Moda",serif;
-}
-
-.event-item h4{
-margin:8px 0 10px;
-font-family:"Bodoni Moda",serif;
-font-size:44px;
-font-weight:500;
-color:#f0c98e;
-}
-
-.event-item p{
-margin:2px 0;
-font-size:18px;
-line-height:1.75;
-color:var(--text-soft);
-}
-
-.location-wrap{
-max-width:760px;
-}
-
-.map-btn{
-display:inline-block;
-margin-top:18px;
-padding:12px 24px;
-border-radius:999px;
-text-decoration:none;
-background:linear-gradient(135deg,#5e7367,#3d4f46);
-color:#fff;
-font-size:16px;
-font-weight:600;
-letter-spacing:.04em;
-transition:transform .2s ease,filter .2s ease;
-font-family:"Cormorant Garamond",serif;
-}
-
-.map-btn:hover{
-transform:translateY(-2px);
-filter:brightness(1.06);
-}
-
-.closing-note{
-max-width:780px;
-}
-
-.closing-note strong{
-color:#f4d39f;
-font-weight:600;
-}
-
-.footer-note{
-margin-top:18px;
-font-size:16px;
-letter-spacing:.04em;
-color:rgba(255,255,255,0.72);
-font-family:"Bodoni Moda",serif;
-}
-
-.reveal{
-opacity:0;
-transform:translateY(26px);
-}
-
-.loaded .reveal{
-animation:fadeUp .8s ease forwards;
-}
-
-.loaded .delay-1{animation-delay:.08s;}
-.loaded .delay-2{animation-delay:.16s;}
-.loaded .delay-3{animation-delay:.24s;}
-.loaded .delay-4{animation-delay:.32s;}
-.loaded .delay-5{animation-delay:.4s;}
-
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(26px);}
-to{opacity:1;transform:translateY(0);}
-}
-
-@keyframes coverZoom{
-from{transform:scale(1.04);}
-to{transform:scale(1.12);}
-}
-
-@media (max-width:900px){
-.scene{
-padding:84px 7vw 58px;
-}
-.couple-grid,
-.event-layout{
-grid-template-columns:1fr;
-gap:14px;
-}
-.scene-title{font-size:clamp(38px,11vw,62px);}
-}
-
-@media (max-width:560px){
-.cover-card{padding:32px 18px;}
-.open-btn{width:100%;}
-.story-progress{right:10px;gap:8px;}
-.story-dot{width:8px;height:8px;}
-.editorial{padding:24px 18px;border-radius:24px;}
-.couple-title{
-margin:8px auto 12px;
-}
-.couple-title .name-top,
-.couple-title .name-bottom{
-font-size:clamp(50px,16vw,70px);
-}
-.to-line{font-size:15px;}
-.scene-subtitle{font-size:17px;line-height:1.75;}
-.person-photo{width:min(210px,72%);}
-.person p{font-size:16px;}
-.event-item p{font-size:16px;}
-.footer-note{font-size:15px;}
-}
-
-@media (prefers-reduced-motion: reduce){
-body{
-scroll-snap-type:none;
-transition:none;
-}
-.cover-video,
-.scene-video{
-display:none;
-animation:none;
-}
-.scene{
-scroll-snap-align:none;
-scroll-snap-stop:normal;
-opacity:1;
-filter:none;
-transition:none;
-}
-.scene::before{
-background:none;
-}
-.scene-bg,
-.scene-video,
-.scene-overlay,
-.scene-inner{
-transform:none;
-transition:none;
-opacity:1;
-}
-.reveal{
-opacity:1;
-transform:none;
-}
-.loaded .reveal{
-animation:none;
-}
+/* ─── Reduced Motion ─────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  body { scroll-snap-type: none; transition: none; }
+  .cover-video, .scene-video { display: none; }
+  .scene { scroll-snap-align: none; scroll-snap-stop: normal; opacity: 1; filter: none; transition: none; }
+  .scene::before { background: none; }
+  .scene-bg, .scene-video, .scene-overlay, .scene-inner { transform: none; transition: none; opacity: 1; }
+  .reveal { opacity: 1; transform: none; }
+  .loaded .reveal { animation: none; }
+  .cover-card-wrap, .open-btn, .stars-s, .stars-m,
+  .divider-icon, .scroll-hint, .couple-title .name-top,
+  .couple-title .name-bottom, .person h3 {
+    animation: none;
+  }
+  .couple-title .name-top,
+  .couple-title .name-bottom,
+  .person h3 {
+    background: var(--gold-soft);
+    -webkit-text-fill-color: var(--gold-soft);
+  }
 }
 </style>
 </head>
 <body class="is-locked" data-scene="opening">
-<section class="cover" id="cover">
-<div class="cover-media" aria-hidden="true">
-<video class="cover-video" autoplay muted loop playsinline preload="metadata">
-<source src="https://assets.mixkit.co/videos/preview/mixkit-couple-holding-hands-at-the-lake-6031-large.mp4" type="video/mp4">
-</video>
+
+<!-- Progress Bar -->
+<div class="scroll-progress" id="scrollProgress" role="presentation" aria-hidden="true"></div>
+
+<!-- Twinkling Stars -->
+<div class="stars-layer" aria-hidden="true">
+  <div class="stars-s"></div>
+  <div class="stars-m"></div>
 </div>
-<div class="cover-overlay" aria-hidden="true"></div>
-<div class="cover-card">
-<p class="kicker">Undangan Pernikahan</p>
-<h1 class="couple-title">
-<span class="name-top">Arka</span>
-<span class="amp">&amp;</span>
-<span class="name-bottom">Livia</span>
-</h1>
-<p class="to-line">Kepada Yth. Bapak/Ibu/Saudara/i</p>
-<p class="recipient-line"><span id="recipient-name">Tamu Undangan</span></p>
-<p class="to-line">Dengan hormat, kami mengundang Anda untuk hadir</p>
-<button class="open-btn" type="button" onclick="openInvite()">Buka Undangan</button>
-</div>
+
+<!-- ── Cover ───────────────────────────────────────── -->
+<section class="cover" id="cover" aria-label="Halaman cover undangan">
+  <div class="cover-media" aria-hidden="true">
+    <video class="cover-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-couple-holding-hands-at-the-lake-6031-large.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="cover-overlay" aria-hidden="true"></div>
+  <div class="cover-card-wrap">
+    <div class="cover-card">
+      <p class="kicker">Undangan Pernikahan</p>
+      <h1 class="couple-title" aria-label="Arka dan Livia">
+        <span class="name-top">Arka</span>
+        <span class="amp">&amp;</span>
+        <span class="name-bottom">Livia</span>
+      </h1>
+      <p class="to-line">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+      <p class="recipient-line"><span id="recipient-name">Tamu Undangan</span></p>
+      <p class="to-line" style="font-size:16px;">Dengan hormat, kami mengundang Anda untuk hadir</p>
+      <button class="open-btn" type="button" onclick="openInvite()">✦ Buka Undangan</button>
+    </div>
+  </div>
 </section>
 
+<!-- ── Main Content ────────────────────────────────── -->
 <main id="content" class="hidden">
-<nav class="story-progress" aria-label="Progress cerita undangan">
-<button class="story-dot active" type="button" data-target="opening" aria-label="Tanggal"></button>
-<button class="story-dot" type="button" data-target="couple" aria-label="Mempelai"></button>
-<button class="story-dot" type="button" data-target="event" aria-label="Acara"></button>
-<button class="story-dot" type="button" data-target="location" aria-label="Lokasi"></button>
-<button class="story-dot" type="button" data-target="closing" aria-label="Penutup"></button>
-</nav>
 
-<section class="scene reveal delay-1" id="scene-opening" data-scene="opening">
-<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
-<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://assets.mixkit.co/videos/preview/mixkit-couple-hold-hands-on-romantic-hike-in-forest-8958-large.mp4" type="video/mp4">
-</video>
-<div class="scene-overlay" aria-hidden="true"></div>
-<div class="scene-inner">
-<div class="editorial">
-<p class="scene-flag">Save The Date</p>
-<h2 class="scene-title">12 Desember 2026</h2>
-<div class="divider"></div>
-<p class="scene-subtitle">
-Assalamu'alaikum Warahmatullahi Wabarakatuh. Dengan penuh rasa syukur atas kasih dan karunia Tuhan Yang Maha Esa,
-kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kami.
-</p>
-<p class="scroll-hint">Scroll untuk melanjutkan</p>
-</div>
-</div>
-</section>
+  <nav class="story-progress" aria-label="Navigasi halaman undangan">
+    <button class="story-dot active" type="button" data-target="opening" aria-label="Tanggal"></button>
+    <button class="story-dot" type="button" data-target="couple"  aria-label="Mempelai"></button>
+    <button class="story-dot" type="button" data-target="event"   aria-label="Acara"></button>
+    <button class="story-dot" type="button" data-target="location" aria-label="Lokasi"></button>
+    <button class="story-dot" type="button" data-target="closing" aria-label="Penutup"></button>
+  </nav>
 
-<section class="scene reveal delay-2" id="scene-couple" data-scene="couple">
-<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
-<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://assets.mixkit.co/videos/preview/mixkit-couple-walk-in-park-eatng-ice-cream-and-holding-hands-12915-large.mp4" type="video/mp4">
-</video>
-<div class="scene-overlay" aria-hidden="true"></div>
-<div class="scene-inner">
-<div class="editorial">
-<p class="scene-flag">The Couple</p>
-<h2 class="scene-title">Mempelai</h2>
-<div class="couple-grid">
-<article class="person">
-<figure class="person-photo">
-<img src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Foto calon mempelai pria Arka Mahendra">
-</figure>
-<small>Mempelai Pria</small>
-<h3>Arka Mahendra</h3>
-<p>Putra pertama dari<br>Bapak Surya Mahendra &amp; Ibu Ratna Dewi</p>
-</article>
-<article class="person">
-<figure class="person-photo">
-<img src="https://images.pexels.com/photos/291759/pexels-photo-291759.jpeg?auto=compress&cs=tinysrgb&w=900" alt="Foto calon mempelai wanita Livia Prameswari">
-</figure>
-<small>Mempelai Wanita</small>
-<h3>Livia Prameswari</h3>
-<p>Putri kedua dari<br>Bapak Pramono &amp; Ibu Wulan Sari</p>
-</article>
-</div>
-</div>
-</div>
-</section>
+  <!-- ── Scene 1: Opening / Save the Date ─────────── -->
+  <section class="scene reveal delay-1" id="scene-opening" data-scene="opening">
+    <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1487412912498-0447578fcca8?auto=format&fit=crop&w=1400&q=70');" aria-hidden="true"></div>
+    <video class="scene-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-couple-hold-hands-on-romantic-hike-in-forest-8958-large.mp4" type="video/mp4">
+    </video>
+    <div class="scene-overlay" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <div class="editorial">
+        <p class="scene-flag">✦ Save The Date</p>
+        <h2 class="scene-title">12 Desember 2026</h2>
+        <div class="divider-wrap" aria-hidden="true">
+          <div class="divider-line"></div>
+          <svg class="divider-icon" width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M11 1 L12.5 8.5 L20 11 L12.5 13.5 L11 21 L9.5 13.5 L2 11 L9.5 8.5 Z" fill="rgba(210,173,114,0.9)"/>
+          </svg>
+          <div class="divider-line"></div>
+        </div>
+        <p class="scene-subtitle">
+          Assalamu'alaikum Warahmatullahi Wabarakatuh. Dengan penuh rasa syukur atas kasih dan karunia Allah SWT,
+          kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada momen sakral pernikahan kami.
+        </p>
 
-<section class="scene reveal delay-3" id="scene-event" data-scene="event">
-<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
-<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://assets.mixkit.co/videos/preview/mixkit-countryside-meadow-4077-large.mp4" type="video/mp4">
-</video>
-<div class="scene-overlay" aria-hidden="true"></div>
-<div class="scene-inner">
-<div class="editorial">
-<p class="scene-flag">Schedule</p>
-<h2 class="scene-title">Waktu &amp; Tempat</h2>
-<div class="event-layout">
-<article class="event-item">
-<p class="event-meta">Rangkaian Pertama</p>
-<h4>Akad Nikah</h4>
-<p>Sabtu, 12 Desember 2026</p>
-<p>08.00 WIB - selesai</p>
-<p>Masjid Al-Ikhlas<br>Jl. Melati Indah No. 12, Jakarta Selatan</p>
-</article>
-<article class="event-item">
-<p class="event-meta">Rangkaian Kedua</p>
-<h4>Resepsi</h4>
-<p>Sabtu, 12 Desember 2026</p>
-<p>11.00 WIB - 14.00 WIB</p>
-<p>Gedung Serbaguna Cempaka<br>Jl. Anggrek Raya No. 8, Jakarta Selatan</p>
-</article>
-</div>
-</div>
-</div>
-</section>
+        <!-- Ayat Al-Qur'an -->
+        <div class="verse-wrap" aria-label="Kutipan Al-Quran">
+          <span class="verse-arabic">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا</span>
+          <span class="verse-id">Dan di antara tanda-tanda kekuasaan-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya — (QS. Ar-Rum: 21)</span>
+        </div>
 
-<section class="scene reveal delay-4" id="scene-location" data-scene="location">
-<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
-<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://assets.mixkit.co/videos/preview/mixkit-very-close-shot-of-the-leaves-of-a-tree-wet-18310-large.mp4" type="video/mp4">
-</video>
-<div class="scene-overlay" aria-hidden="true"></div>
-<div class="scene-inner">
-<div class="editorial location-wrap">
-<p class="scene-flag">Direction</p>
-<h2 class="scene-title">Lokasi Acara</h2>
-<p class="scene-subtitle">
-Agar perjalanan lebih nyaman, silakan buka navigasi digital melalui tombol berikut.
-</p>
-<a class="map-btn" href="#" target="_blank" rel="noopener noreferrer">Buka Google Maps</a>
-</div>
-</div>
-</section>
+        <!-- Countdown -->
+        <div class="countdown-wrap" id="countdown" aria-label="Hitung mundur menuju hari pernikahan"></div>
 
-<section class="scene reveal delay-5" id="scene-closing" data-scene="closing">
-<div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1900&q=80');" aria-hidden="true"></div>
-<video class="scene-video" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
-<source src="https://assets.mixkit.co/videos/preview/mixkit-couple-holding-hands-at-the-lake-6031-large.mp4" type="video/mp4">
-</video>
-<div class="scene-overlay" aria-hidden="true"></div>
-<div class="scene-inner">
-<div class="editorial closing-note">
-<p class="scene-flag">Blessing</p>
-<h2 class="scene-title">Doa Restu</h2>
-<p class="scene-subtitle">
-Merupakan suatu kehormatan dan kebahagiaan yang tak ternilai bagi kami, apabila Bapak/Ibu/Saudara/i
-berkenan hadir dan memberikan doa restu untuk perjalanan baru kami.
-</p>
-<p class="scene-subtitle" style="margin-top:16px;"><strong>Wassalamu'alaikum Warahmatullahi Wabarakatuh</strong></p>
-<p class="footer-note">Hormat kami, keluarga besar Arka &amp; Livia</p>
-</div>
-</div>
-</section>
+        <p class="scroll-hint" aria-hidden="true">↓ Scroll untuk melanjutkan</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Scene 2: The Couple ───────────────────────── -->
+  <section class="scene reveal delay-2" id="scene-couple" data-scene="couple">
+    <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1520854221256-17451cc331bf?auto=format&fit=crop&w=1400&q=70');" aria-hidden="true"></div>
+    <video class="scene-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-couple-walk-in-park-eatng-ice-cream-and-holding-hands-12915-large.mp4" type="video/mp4">
+    </video>
+    <div class="scene-overlay" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <div class="editorial">
+        <p class="scene-flag">✦ The Couple</p>
+        <h2 class="scene-title">Mempelai</h2>
+        <div class="couple-grid">
+          <article class="person">
+            <figure class="person-photo">
+              <img src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Foto calon mempelai pria Arka Mahendra" loading="lazy">
+            </figure>
+            <small>Mempelai Pria</small>
+            <h3>Arka Mahendra</h3>
+            <p>Putra pertama dari<br>Bapak Surya Mahendra &amp; Ibu Ratna Dewi</p>
+          </article>
+          <article class="person">
+            <figure class="person-photo">
+              <img src="https://images.pexels.com/photos/291759/pexels-photo-291759.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Foto calon mempelai wanita Livia Prameswari" loading="lazy">
+            </figure>
+            <small>Mempelai Wanita</small>
+            <h3>Livia Prameswari</h3>
+            <p>Putri kedua dari<br>Bapak Pramono &amp; Ibu Wulan Sari</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Scene 3: Schedule ─────────────────────────── -->
+  <section class="scene reveal delay-3" id="scene-event" data-scene="event">
+    <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1507504031003-b417219a0fde?auto=format&fit=crop&w=1400&q=70');" aria-hidden="true"></div>
+    <video class="scene-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-countryside-meadow-4077-large.mp4" type="video/mp4">
+    </video>
+    <div class="scene-overlay" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <div class="editorial">
+        <p class="scene-flag">✦ Schedule</p>
+        <h2 class="scene-title">Waktu &amp; Tempat</h2>
+        <div class="event-layout">
+          <article class="event-item">
+            <p class="event-meta">Rangkaian Pertama</p>
+            <h4>Akad Nikah</h4>
+            <p>Sabtu, 12 Desember 2026</p>
+            <p>08.00 WIB — selesai</p>
+            <p>Masjid Al-Ikhlas<br>Jl. Melati Indah No. 12, Jakarta Selatan</p>
+          </article>
+          <article class="event-item">
+            <p class="event-meta">Rangkaian Kedua</p>
+            <h4>Resepsi</h4>
+            <p>Sabtu, 12 Desember 2026</p>
+            <p>11.00 — 14.00 WIB</p>
+            <p>Gedung Serbaguna Cempaka<br>Jl. Anggrek Raya No. 8, Jakarta Selatan</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Scene 4: Location ─────────────────────────── -->
+  <section class="scene reveal delay-4" id="scene-location" data-scene="location">
+    <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&w=1400&q=70');" aria-hidden="true"></div>
+    <video class="scene-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-very-close-shot-of-the-leaves-of-a-tree-wet-18310-large.mp4" type="video/mp4">
+    </video>
+    <div class="scene-overlay" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <div class="editorial location-wrap">
+        <p class="scene-flag">✦ Direction</p>
+        <h2 class="scene-title">Lokasi Acara</h2>
+        <p class="scene-subtitle">
+          Agar perjalanan lebih nyaman, silakan buka navigasi digital melalui tombol berikut.
+        </p>
+        <a class="map-btn" href="https://maps.google.com?q=Masjid+Al-Ikhlas+Jakarta+Selatan" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          Buka Google Maps — Akad
+        </a>
+        &nbsp;
+        <a class="map-btn" href="https://maps.google.com?q=Gedung+Cempaka+Jakarta+Selatan" target="_blank" rel="noopener noreferrer" style="margin-top:10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          Buka Google Maps — Resepsi
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Scene 5: Closing / RSVP ───────────────────── -->
+  <section class="scene reveal delay-5" id="scene-closing" data-scene="closing">
+    <div class="scene-bg" style="background-image:url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1400&q=70');" aria-hidden="true"></div>
+    <video class="scene-video" autoplay muted loop playsinline preload="none" aria-hidden="true">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-couple-holding-hands-at-the-lake-6031-large.mp4" type="video/mp4">
+    </video>
+    <div class="scene-overlay" aria-hidden="true"></div>
+    <div class="scene-inner">
+      <div class="editorial closing-note">
+        <p class="scene-flag">✦ Blessing</p>
+        <h2 class="scene-title">Doa Restu</h2>
+        <div class="divider-wrap" aria-hidden="true">
+          <div class="divider-line"></div>
+          <svg class="divider-icon" width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M11 1 L12.5 8.5 L20 11 L12.5 13.5 L11 21 L9.5 13.5 L2 11 L9.5 8.5 Z" fill="rgba(210,173,114,0.9)"/>
+          </svg>
+          <div class="divider-line"></div>
+        </div>
+        <p class="scene-subtitle">
+          Merupakan suatu kehormatan dan kebahagiaan yang tak ternilai bagi kami, apabila Bapak/Ibu/Saudara/i
+          berkenan hadir dan memberikan doa restu untuk perjalanan baru kami.
+        </p>
+        <p class="scene-subtitle" style="margin-top:16px;"><strong>Wassalamu'alaikum Warahmatullahi Wabarakatuh</strong></p>
+
+        <!-- WhatsApp RSVP -->
+        <a class="whatsapp-btn"
+           href="https://wa.me/6281234567890?text=Assalamu%27alaikum%2C+saya+konfirmasi+hadir+di+acara+pernikahan+Arka+%26+Livia+pada+12+Desember+2026+%F0%9F%A4%8D"
+           target="_blank" rel="noopener noreferrer"
+           aria-label="Konfirmasi kehadiran via WhatsApp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Konfirmasi Kehadiran
+        </a>
+
+        <p class="footer-note">Hormat kami, keluarga besar Arka &amp; Livia ✦</p>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <script>
-function setRecipientName(){
-const params = new URLSearchParams(window.location.search);
-const rawName = params.get("to") || params.get("nama");
-const recipientEl = document.getElementById("recipient-name");
+/* ── Recipient Name ─────────────────────────────────── */
+(function setRecipientName() {
+  var params = new URLSearchParams(window.location.search);
+  var rawName = params.get("to") || params.get("nama");
+  var el = document.getElementById("recipient-name");
+  if (el && rawName) {
+    el.textContent = rawName.replace(/\+/g, " ").trim() || el.textContent;
+  }
+})();
 
-if(!recipientEl || !rawName){
-return;
+/* ── Countdown Timer ────────────────────────────────── */
+(function initCountdown() {
+  var target = new Date("2026-12-12T08:00:00+07:00");
+  var wrap = document.getElementById("countdown");
+  if (!wrap) return;
+
+  function pad(n) { return n < 10 ? "0" + n : String(n); }
+
+  function render() {
+    var now = new Date();
+    var diff = target - now;
+    if (diff <= 0) {
+      wrap.innerHTML = '<div class="cd-item"><span class="cd-num" style="font-size:18px;">Hari Ini!</span></div>';
+      return;
+    }
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    wrap.innerHTML =
+      '<div class="cd-item"><span class="cd-num">' + d + '</span><span class="cd-label">Hari</span></div>' +
+      '<div class="cd-item"><span class="cd-num">' + pad(h) + '</span><span class="cd-label">Jam</span></div>' +
+      '<div class="cd-item"><span class="cd-num">' + pad(m) + '</span><span class="cd-label">Menit</span></div>' +
+      '<div class="cd-item"><span class="cd-num">' + pad(s) + '</span><span class="cd-label">Detik</span></div>';
+  }
+  render();
+  setInterval(render, 1000);
+})();
+
+/* ── Scroll Progress Bar ────────────────────────────── */
+(function initScrollProgress() {
+  var bar = document.getElementById("scrollProgress");
+  if (!bar) return;
+  function update() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    if (max <= 0) return;
+    bar.style.width = Math.round((window.scrollY / max) * 100) + "%";
+  }
+  window.addEventListener("scroll", update, { passive: true });
+})();
+
+/* ── Scene Observer & Parallax ──────────────────────── */
+var sceneObserverInitialized = false;
+var sceneElements = [];
+var currentSceneName = "";
+var scrollEffectsBound = false;
+var scrollTicking = false;
+
+function setActiveScene(scene) {
+  if (!scene) return;
+  var sceneName = scene.dataset.scene;
+  if (sceneName === currentSceneName) return;
+  currentSceneName = sceneName;
+  document.body.setAttribute("data-scene", sceneName);
+  document.querySelectorAll(".story-dot").forEach(function(dot) {
+    dot.classList.toggle("active", dot.dataset.target === sceneName);
+  });
+  document.querySelectorAll(".scene-video").forEach(function(video) {
+    if (video.closest(".scene") === scene) {
+      video.play().catch(function() {});
+    } else {
+      video.pause();
+    }
+  });
 }
 
-const cleaned = rawName.replace(/\+/g," ").trim();
-if(cleaned){
-recipientEl.textContent = cleaned;
-}
-}
-
-let sceneObserverInitialized = false;
-let sceneElements = [];
-let currentSceneName = "";
-let scrollEffectsBound = false;
-let scrollTicking = false;
-
-function setActiveScene(scene){
-if(!scene){
-return;
+function updateSceneClasses(activeIndex) {
+  sceneElements.forEach(function(scene, index) {
+    scene.classList.toggle("is-active", index === activeIndex);
+    scene.classList.toggle("is-prev",   index === activeIndex - 1);
+    scene.classList.toggle("is-next",   index === activeIndex + 1);
+  });
 }
 
-const sceneName = scene.dataset.scene;
-if(sceneName === currentSceneName){
-return;
+function updateScrollEffects() {
+  if (!sceneElements.length) return;
+  var vh = window.innerHeight || 1;
+  var closestIndex = 0, closestDist = Infinity;
+  sceneElements.forEach(function(scene, index) {
+    var rect = scene.getBoundingClientRect();
+    var dist = (rect.top + rect.height / 2 - vh / 2) / (vh / 2);
+    var clamped = Math.max(-1, Math.min(1, dist));
+    scene.style.setProperty("--parallax", String((-clamped * 0.42).toFixed(4)));
+    var abs = Math.abs(dist);
+    if (abs < closestDist) { closestDist = abs; closestIndex = index; }
+  });
+  updateSceneClasses(closestIndex);
+  setActiveScene(sceneElements[closestIndex]);
 }
 
-currentSceneName = sceneName;
-document.body.setAttribute("data-scene", sceneName);
-
-document.querySelectorAll(".story-dot").forEach(function(dot){
-dot.classList.toggle("active", dot.dataset.target === sceneName);
-});
-
-document.querySelectorAll(".scene-video").forEach(function(video){
-if(video.closest(".scene") === scene){
-video.play().catch(function(){});
-}else{
-video.pause();
-}
-});
-}
-
-function updateSceneClasses(activeIndex){
-sceneElements.forEach(function(scene,index){
-scene.classList.toggle("is-active", index === activeIndex);
-scene.classList.toggle("is-prev", index === activeIndex - 1);
-scene.classList.toggle("is-next", index === activeIndex + 1);
-});
+function bindScrollEffects() {
+  if (scrollEffectsBound) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    updateSceneClasses(0);
+    if (sceneElements[0]) setActiveScene(sceneElements[0]);
+    return;
+  }
+  function req() {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    window.requestAnimationFrame(function() { scrollTicking = false; updateScrollEffects(); });
+  }
+  window.addEventListener("scroll", req, { passive: true });
+  window.addEventListener("resize", req);
+  scrollEffectsBound = true;
+  req();
 }
 
-function updateScrollEffects(){
-if(!sceneElements.length){
-return;
+function initSceneObserver() {
+  if (sceneObserverInitialized) return;
+  sceneElements = Array.from(document.querySelectorAll(".scene[data-scene]"));
+  if (!sceneElements.length) return;
+  bindScrollEffects();
+  if (sceneElements[0]) {
+    updateSceneClasses(0);
+    setActiveScene(sceneElements[0]);
+    sceneElements[0].style.setProperty("--parallax", "0");
+  }
+  window.requestAnimationFrame(updateScrollEffects);
+  sceneElements.forEach(function(s) { s.style.setProperty("--parallax", "0"); });
+  sceneObserverInitialized = true;
 }
 
-const viewportHeight = window.innerHeight || 1;
-let closestIndex = 0;
-let closestDistance = Infinity;
-
-sceneElements.forEach(function(scene,index){
-const rect = scene.getBoundingClientRect();
-const distanceFromCenter = (rect.top + (rect.height / 2) - (viewportHeight / 2)) / (viewportHeight / 2);
-const clamped = Math.max(-1, Math.min(1, distanceFromCenter));
-scene.style.setProperty("--parallax", String((-clamped * 0.45).toFixed(4)));
-
-const distanceAbs = Math.abs(distanceFromCenter);
-if(distanceAbs < closestDistance){
-closestDistance = distanceAbs;
-closestIndex = index;
-}
-});
-
-updateSceneClasses(closestIndex);
-setActiveScene(sceneElements[closestIndex]);
+function initProgressNavigation() {
+  document.querySelectorAll(".story-dot").forEach(function(dot) {
+    dot.addEventListener("click", function() {
+      var target = document.querySelector('[data-scene="' + dot.dataset.target + '"]');
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
 }
 
-function bindScrollEffects(){
-if(scrollEffectsBound){
-return;
+/* ── Open Invite ────────────────────────────────────── */
+function openInvite() {
+  var cover   = document.getElementById("cover");
+  var content = document.getElementById("content");
+  var cv      = document.querySelector(".cover-video");
+  var first   = document.querySelector('.scene[data-scene="opening"]');
+
+  cover.classList.add("fade-out");
+  setTimeout(function() {
+    content.classList.remove("hidden");
+    content.classList.add("loaded");
+    document.body.classList.remove("is-locked");
+    if (cv) cv.pause();
+    initSceneObserver();
+    if (first) setActiveScene(first);
+    window.scrollTo(0, 0);
+  }, 280);
 }
 
-if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-updateSceneClasses(0);
-if(sceneElements[0]){
-setActiveScene(sceneElements[0]);
-}
-return;
-}
-
-function requestScrollUpdate(){
-if(scrollTicking){
-return;
-}
-
-scrollTicking = true;
-window.requestAnimationFrame(function(){
-scrollTicking = false;
-updateScrollEffects();
-});
-}
-
-window.addEventListener("scroll", requestScrollUpdate, { passive:true });
-window.addEventListener("resize", requestScrollUpdate);
-scrollEffectsBound = true;
-requestScrollUpdate();
-}
-
-function initSceneObserver(){
-if(sceneObserverInitialized){
-return;
-}
-
-sceneElements = Array.from(document.querySelectorAll(".scene[data-scene]"));
-if(!sceneElements.length){
-return;
-}
-
-bindScrollEffects();
-if(sceneElements[0]){
-updateSceneClasses(0);
-setActiveScene(sceneElements[0]);
-sceneElements[0].style.setProperty("--parallax","0");
-}
-window.requestAnimationFrame(updateScrollEffects);
-sceneElements.forEach(function(scene){
-scene.style.setProperty("--parallax","0");
-});
-
-sceneObserverInitialized = true;
-}
-
-function initProgressNavigation(){
-const dots = document.querySelectorAll(".story-dot");
-dots.forEach(function(dot){
-dot.addEventListener("click", function(){
-const target = document.querySelector('[data-scene="' + dot.dataset.target + '"]');
-if(target){
-target.scrollIntoView({behavior:"smooth",block:"start"});
-}
-});
-});
-}
-
-function openInvite(){
-const cover = document.getElementById("cover");
-const content = document.getElementById("content");
-const coverVideo = document.querySelector(".cover-video");
-const firstScene = document.querySelector('.scene[data-scene="opening"]');
-
-cover.classList.add("fade-out");
-setTimeout(function(){
-content.classList.remove("hidden");
-content.classList.add("loaded");
-document.body.classList.remove("is-locked");
-if(coverVideo){
-coverVideo.pause();
-}
-initSceneObserver();
-if(firstScene){
-setActiveScene(firstScene);
-}
-window.scrollTo(0,0);
-},260);
-}
-
-setRecipientName();
 initProgressNavigation();
 </script>
 </body>
